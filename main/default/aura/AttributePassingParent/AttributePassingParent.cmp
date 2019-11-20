@@ -1,0 +1,11 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name = "parentMsg" type = "String" default = "Hello Parent"/>
+    <aura:registerEvent name="cmpEvent" type="c:ceEvent"/>
+    
+    <aura:handler name="cmpEvent" event="c:ceEvent" action="{!c.handleComponentEvent}"/>
+    
+    <p>Message from Parent : {!v.parentMsg}</p><br />
+    <lightning:button variant="base" label="Parent" title="Parent" onclick="{! c.handleClick }"/>
+    
+    <c:AttributePassingChild childMsg = "{!v.parentMsg}" />
+</aura:component>

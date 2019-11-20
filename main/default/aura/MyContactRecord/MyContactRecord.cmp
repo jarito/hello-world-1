@@ -1,0 +1,427 @@
+<aura:component controller  = "communityUserController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+<!--	<aura:attribute name="item" type="Map" default="{ 	firstName : 'Jenny',
+                                                        lastName : 'Doe',
+                                                        birthdate : '1990-12-01',
+                                                        phone : '219-682-6308',
+                                                        title : 'System Executive',
+                                                        photoUrl : '2019-is-akshay-kumar-s-year-move-over-khans-1424191-2019-01-05',
+                                                        recordType : 'Fellow',
+                                                        fellowshipLocation : 'Uganda',
+                                                        fellowshipDuration : '2018-2019',
+                                                        skype : 'jenny.doe',
+                                                        languagesSpoken : 'English; French; Portuguese'}" />
+-->
+    <aura:attribute name="item" type="User" access = "public"/>
+    <aura:attribute name="msg" type="String" default = "default msg" access = "public"/>
+    <aura:attribute name="skillSet" type="List"  access = "public"/>
+	<aura:attribute name="userId" type="String" access = "public"/>
+    <aura:attribute name = "recordId" type = "String" default = "defaultRecId" access= "global"/>
+    <aura:attribute name = "record" type = "Object" access= "global" />
+    <aura:attribute name = "simpleRecord" type = "Object" access= "global"/>
+    <aura:attribute name = "ShowCurrentUser" type = "Boolean" default = "true" access= "global"/>
+    <aura:attribute name = "ShowOtherUser" type = "Boolean" default = "false" access= "global"/>
+    
+  <!--  <aura:method name="doInit" action="{!c.doInit}"/>-->
+    <aura:handler name = "init" action = "{!c.doInit}" value="{!this}" /> 
+    
+    <lightning:overlayLibrary aura:id="overlayLib" />
+	<h1>msg --> {!v.msg}</h1>
+    <force:recordData aura:id="recordHandler"
+                      recordId="{!v.recordId}"
+                      fields="Id, 
+                              Name,
+                              Title,
+                              Phone,
+                              Contact.Id,
+                              Contact.FirstName, 
+                              Contact.LastName,
+                              Contact.fellowshipDuration__c, 
+                      		  Contact.fellowshipLocation__c,
+                      	      Contact.Title,
+                      		  Contact.languagesSpoken__c,
+                      		  Contact.Phone,
+                      		  Contact.skype__c,
+                              Contact.Email,
+                      		  Contact.Co_Fellow__c,
+                      		  Contact.Facebook__c,
+                      		  Contact.fellowshipPosition__c,
+                              Contact.LinkedIn__c,
+                      		  Contact.Organization__c,
+                              Contact.Organization__r.Name,
+                              Contact.Primary_Affiliation__c,
+                      		  Contact.Twitter__c"
+                      targetRecord="{!v.record}"
+                      targetFields="{!v.simpleRecord}"
+                      targetError="{!v.recordError}"
+                      recordUpdated="{!c.handleRecordUpdated}"
+    />
+ 	<aura:if isTrue = "{!v.ShowCurrentUser}" >
+        <lightning:card iconName="standard:contact" title="Contact">
+            <aura:set attribute="actions">
+                <lightning:button variant="Neutral"
+                                  value = "{!v.simpleRecord.Contact.Id}"
+                                  name = "{!v.item.Id}"
+                                  label="Edit" 
+                                  title="Edit" 
+                                  onclick="{! c.handleEditProfile }"/>
+                <c:skillSet onfilterchange="{!c.handleFilterChange}" />
+                
+            </aura:set>
+            <p>Hello</p>
+            <div class="slds-text-heading_medium slds-p-left_medium slds-text-title_bold">{!v.simpleRecord.Name}</div>
+            <div class="slds-p-left_medium slds-grid slds-wrap">
+                <div class="slds slds-col slds-size_4-of-12 slds-p-left_x-large slds-p-top_x-small ">
+                    <span class=" slds-avatar slds-avatar_large slds-avatar--circle">
+                        <img src="{!$Resource.ImageContact}" alt="person name"/>
+                    </span>
+                </div>
+                <div class="slds-col slds-size_8-of-12 slds-p-bottom_medium slds-p-right_xx-large">
+                    <div class="slds-theme_shade" >
+                        <div class="slds-text-heading_medium slds-text-title_bold ">&nbsp;Fellowship <br/>&nbsp;Information</div>
+                        <lightning:card >
+                            <div class="slds-p-left_medium slds-grid slds-wrap ">
+                                <div class="slds-col slds-size_6-of-12 slds-p-bottom_medium">
+                                    <span><p class="field-title" title="Fellowship Duration">Fellowship Duration</p></span>
+                                    <p>{!v.simpleRecord.Contact.FirstName}</p><br/>
+                                    <span><p class="field-title" title="Fellowship Location">Fellowship Location</p></span>
+                                    <p>{!v.simpleRecord.Contact.fellowshipLocation__c}</p><br/>
+                                	<span><p class="field-title" title="Co-Fellow">Co-Fellow</p></span>
+                                    <p>{!v.simpleRecord.Contact.Co_Fellow__c}</p><br/>
+                                </div>
+                                
+                                <div class="slds-col slds-size_6-of-12 slds-p-bottom_medium">
+                                    <span><p class="field-title" title="Placement Organization">Placement Organization</p></span>
+                                    <p>{!v.simpleRecord.Contact.Organization__r.Name}</p><br/>
+                                    <span><p class="field-title" title="Fellowship Position">Fellowship Position</p></span>
+                                    <p>{!v.simpleRecord.Contact.fellowshipPosition__c}</p><br/>
+                                </div>
+                            </div>
+                        </lightning:card>
+                    </div>
+                </div> 
+                <div class="slds-col slds-size_6-of-12 slds-p-bottom_medium">
+                    <div class="slds-text-heading_medium slds-text-title_bold">Details</div>
+                    <div class="c-container slds-p-left_x-small">
+                        <lightning:layout >
+                            <lightning:layoutItem padding="around-small">
+                                <div class="header-column">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_4-of-12 ">
+                                            <span><p class="field-title" title="Name">Name</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_8-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" content="Name of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <!--<p class="field-title" title="Name">Name</p>
+                                    <lightning:helptext content="Name of the Candidate"/>-->
+                                    <p>{!v.simpleRecord.Contact.FirstName}&nbsp;&nbsp;{!v.simpleRecord.Contact.LastName}</p><br/>
+                                     
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span><p class="field-title" title="Primary Affiliation">Primary Affiliation</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" content="Designation of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.Primary_Affiliation__c}</p><br/>
+                                    
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span><p class="field-title" title="Title">Title</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" content="Designation of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.Title}</p><br/>
+                                    
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span><p class="field-title" title="Languages Spoken">Languages Spoken</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" content="Languages spoken by the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.languagesSpoken__c}</p><br/>
+                                    
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span><p class="field-title" title="Phone(Whatsapp)">Phone (Whatsapp)</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" content="Whatsapp contact number of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.Phone}</p><br/>                              
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_6-of-12 slds-p-bottom_medium">
+                    <!--<span>Details Part 2</span>-->
+                    <div class="c-container slds-p-left_x-small">
+                        <lightning:layout >
+                            <lightning:layoutItem padding="around-small">
+                                <div class="header-column">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span><p class="field-title" title="Email">Email</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" 
+                                                                                                     content="Skype Id of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.Email}</p><br/>  
+                                    
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span><p class="field-title" title="Skype">Skype</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" 
+                                                                                                     content="Skype Id of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.skype__c}</p><br/> 
+                                    
+                                     <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_4-of-12 ">
+                                            <span><p class="field-title" title="LinkedIn">LinkedIn</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_8-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" 
+                                                                                                     content="Skype Id of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.LinkedIn__c}</p><br/> 
+                                    
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span><p class="field-title" title="Twitter">Twitter</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" 
+                                                                                                     content="Skype Id of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.Twitter__c}</p><br/> 
+
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_4-of-12 ">
+                                            <span><p class="field-title" title="Facebook">Facebook</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_8-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" 
+                                                                                                     content="Skype Id of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.Facebook__c}</p><br/> 
+                                    
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>                
+                </div>
+                <div class="slds-col slds-size_6-of-12">
+                    <div class="slds-text-heading_medium slds-text-title_bold">Additional Information 1</div>
+                </div>
+                <div class="slds-col slds-size_6-of-12">
+                    <div class="slds-text-heading_medium slds-text-title_bold">Additional Information 2</div>
+                </div>
+            </div>
+            <table>
+            	<thead>
+                	<tr>
+                    	<td>Skill Set</td>
+                    </tr>
+                </thead>
+                <tbody>
+                	<aura:iteration items="{!v.skillSet}" var="item">
+                    	<aura:iteration items="{!item.Skill_Sets__r}" var="skillItem">
+                            <tr>
+                                <td>{!skillItem.Skills__c}</td>
+                            </tr>
+                        </aura:iteration>
+                    </aura:iteration>
+                </tbody>
+            </table>
+        </lightning:card>    
+    </aura:if>
+    
+ 	<aura:if isTrue = "{!v.ShowOtherUser}" >
+        <lightning:card iconName="standard:contact" title="Contact">
+            <p>Hello Other User ...</p>
+            <div class="slds-text-heading_medium slds-p-left_medium slds-text-title_bold">{!v.simpleRecord.Name}</div>
+            <div class="slds-p-left_medium slds-grid slds-wrap">
+                <div class="slds slds-col slds-size_4-of-12 slds-p-left_x-large slds-p-top_x-small ">
+                    <span class=" slds-avatar slds-avatar_large slds-avatar--circle">
+                        <img src="{!$Resource.ImageContact}" alt="person name"/>
+                    </span>
+                </div>
+                <div class="slds-col slds-size_8-of-12 slds-p-bottom_medium slds-p-right_xx-large">
+                    <div class="slds-theme_shade" >
+                        <div class="slds-text-heading_medium slds-text-title_bold ">&nbsp;Fellowship <br/>&nbsp;Information</div>
+                        <lightning:card >
+                            <div class="slds-p-left_medium slds-grid slds-wrap ">
+                                <div class="slds-col slds-size_6-of-12 slds-p-bottom_medium">
+                                    <span><p class="field-title" title="Fellowship Duration">Fellowship Duration</p></span>
+                                    <p>{!v.simpleRecord.Contact.FirstName}</p><br/>
+                                    <span><p class="field-title" title="Fellowship Location">Fellowship Location</p></span>
+                                    <p>{!v.simpleRecord.Contact.fellowshipLocation__c}</p><br/>
+                                	<span><p class="field-title" title="Co-Fellow">Co-Fellow</p></span>
+                                    <p>{!v.simpleRecord.Contact.Co_Fellow__c}</p><br/>
+                                </div>
+                                
+                                <div class="slds-col slds-size_6-of-12 slds-p-bottom_medium">
+                                    <span><p class="field-title" title="Placement Organization">Placement Organization</p></span>
+                                    <p>{!v.simpleRecord.Contact.Organization__r.Name}</p><br/>
+                                    <span><p class="field-title" title="Fellowship Position">Fellowship Position</p></span>
+                                    <p>{!v.simpleRecord.Contact.fellowshipPosition__c}</p><br/>
+                                </div>
+                            </div>
+                        </lightning:card>
+                    </div>
+                </div> 
+                <div class="slds-col slds-size_6-of-12 slds-p-bottom_medium">
+                    <div class="slds-text-heading_medium slds-text-title_bold">Details</div>
+                    <div class="c-container slds-p-left_x-small">
+                        <lightning:layout >
+                            <lightning:layoutItem padding="around-small">
+                                <div class="header-column">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_4-of-12 ">
+                                            <span><p class="field-title" title="Name">Name</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_8-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" content="Name of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <!--<p class="field-title" title="Name">Name</p>
+                                    <lightning:helptext content="Name of the Candidate"/>-->
+                                    <p>{!v.simpleRecord.Contact.FirstName}&nbsp;&nbsp;{!v.simpleRecord.Contact.LastName}</p><br/>
+                                     
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span><p class="field-title" title="Primary Affiliation">Primary Affiliation</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" content="Designation of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.Primary_Affiliation__c}</p><br/>
+                                    
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span><p class="field-title" title="Title">Title</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" content="Designation of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.Title}</p><br/>
+                                    
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span><p class="field-title" title="Languages Spoken">Languages Spoken</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" content="Languages spoken by the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.languagesSpoken__c}</p><br/>
+                                    
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span><p class="field-title" title="Phone(Whatsapp)">Phone (Whatsapp)</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" content="Whatsapp contact number of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.Phone}</p><br/>                              
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_6-of-12 slds-p-bottom_medium">
+                    <!--<span>Details Part 2</span>-->
+                    <div class="c-container slds-p-left_x-small">
+                        <lightning:layout >
+                            <lightning:layoutItem padding="around-small">
+                                <div class="header-column">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span><p class="field-title" title="Email">Email</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" 
+                                                                                                     content="Skype Id of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.Email}</p><br/>  
+                                    
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span><p class="field-title" title="Skype">Skype</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" 
+                                                                                                     content="Skype Id of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.skype__c}</p><br/> 
+                                    
+                                     <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_4-of-12 ">
+                                            <span><p class="field-title" title="LinkedIn">LinkedIn</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_8-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" 
+                                                                                                     content="Skype Id of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.LinkedIn__c}</p><br/> 
+                                    
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_3-of-12 ">
+                                            <span><p class="field-title" title="Twitter">Twitter</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_9-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" 
+                                                                                                     content="Skype Id of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.Twitter__c}</p><br/> 
+
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_4-of-12 ">
+                                            <span><p class="field-title" title="Facebook">Facebook</p></span>
+                                        </div>
+                                        <div class="slds-col slds-size_8-of-12 ">
+                                            <span class="slds-m-bottom_xx-small"><lightning:helptext class = "helpText" 
+                                                                                                     content="Skype Id of the Candidate"/></span>
+                                        </div>
+                                    </div>
+                                    <p>{!v.simpleRecord.Contact.Facebook__c}</p><br/> 
+                                    
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>                
+                </div>
+                <div class="slds-col slds-size_6-of-12">
+                    <div class="slds-text-heading_medium slds-text-title_bold">Additional Information 1</div>
+                </div>
+                <div class="slds-col slds-size_6-of-12">
+                    <div class="slds-text-heading_medium slds-text-title_bold">Additional Information 2</div>
+                </div>
+            </div>
+        </lightning:card>    
+    </aura:if>
+</aura:component>

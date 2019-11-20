@@ -1,0 +1,8 @@
+<design:component label="Account Search Template">
+    <flexipage:template >
+      <flexipage:region name="firstElement" defaultWidth="Medium" />
+      <flexipage:region name="secondElement" defaultWidth="Medium" />
+      <flexipage:region name="thirdElement" defaultWidth="Medium" />
+      <flexipage:region name="fourthElement" defaultWidth="Medium" />
+  </flexipage:template>
+</design:component>

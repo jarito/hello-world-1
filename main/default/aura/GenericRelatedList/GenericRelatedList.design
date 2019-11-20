@@ -1,0 +1,7 @@
+<design:component>
+    <design:attribute name="objectName" label="Select Child Object" datasource="apex://CustomRelatedListController"/>
+    <design:attribute name="fieldsetName" label="Enter FieldSet Name"/>
+    <design:attribute name="maxRecords" label="Enter the maximum number of records to display"/>
+    <design:attribute name="fieldNameForSort" label="Enter the field API name to sort the records" default="Id" />
+    <design:attribute name="order" label="Enter the order to sort the records (Ascending/Descending)" datasource="ASC,DESC" default="ASC" />
+</design:component>

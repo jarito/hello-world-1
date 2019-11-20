@@ -1,0 +1,71 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name = "recordId" type = "String" access= "global"/>
+    <aura:attribute name = "record" type = "Object" access= "global" />
+    <aura:attribute name = "simpleRecord" type = "Object" access= "global"/>
+    <aura:attribute name="recordError" type="String"/>
+    <aura:attribute name = "selectedAccountId" type = "String" />
+    <aura:attribute name = "accountRecId" type = "string" access = "global" />   
+    <lightning:overlayLibrary aura:id="overlayLib" />
+
+<!--    <aura:method name = "sendId" action = "{!c.acceptId}" access = "public" >
+        <aura:attribute name = "recordId" type = "String" />
+    </aura:method> -->
+
+    <force:recordData aura:id="recordHandler"
+         recordId="{!v.recordId}"
+         layoutType="FULL"
+         targetRecord="{!v.record}"
+         targetFields="{!v.simpleRecord}"
+         targetError="{!v.recordError}"
+         recordUpdated="{!c.handleRecordUpdated}"
+    />
+	<div class="slds-p-top_medium">
+        <aura:if isTrue="{!not(empty(v.recordId))}">
+            <lightning:card iconName="standard:account" title="Account Details">
+                <aura:set attribute="actions">
+                    <!--<lightning:button variant="brand" label="Edit" onclick="{!c.editAccount}" value="{!v.recordId}"/>-->
+                	<lightning:buttonIcon iconName="utility:edit" 
+                                          size="medium" 
+                                          variant="bare" 
+                                          onclick="{! c.editAccount }" 
+                                          value="{!v.recordId}" 
+                                          alternativeText="Edit Account" 
+                                          iconClass="dark"/>
+                </aura:set>
+                <lightning:layout>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">Account Name</p>
+                            <p> {!v.simpleRecord.Name} </p>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">Industry</p>
+                            <p> {!v.simpleRecord.Industry} </p>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">City</p>
+                            <p> {!v.simpleRecord.BillingCity} </p>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">Website</p>
+                            <p> {!v.simpleRecord.Website} </p>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>        	
+            </lightning:card>       
+        </aura:if>     
+    </div>
+
+<!-- Open record in Edit Mode on same as page which occupies
+	 some space from component and doesn't open record as popover -->
+<!--<aura:if isTrue="{!not(empty(v.selectedAccountId))}">
+    	<c:MyAccountEdit recordId = "{!v.selectedAccountId}"/>        
+    </aura:if> -->
+    
+</aura:component>

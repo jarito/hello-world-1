@@ -1,0 +1,54 @@
+<template>
+    <h1>{objectName}</h1>
+    <h1>{recId}</h1>
+    <h1>{message}</h1>
+    <h1>{msg}</h1>
+    <div class="slds-p-top_none slds-card__body">
+        <template if:true={recId}>
+            <template if:true={opportunityObject}>
+                <template if:true={opportunityList.data}>
+                    <lightning-card icon-name="standard:account" title="Account Details">
+                        <div class = "tableStyle">
+                            <lightning-accordion class="slds-accordion"
+                                                 allow-multiple-sections-open = "true" >
+                                <table class="slds-table slds-table_bordered">
+                                    <thead>
+                                        <tr class = "fontSize">
+                                            <th>&nbsp;&nbsp;&nbsp;Name</th>
+                                        </tr>                            	
+                                    </thead>
+                                    <tbody>
+                                        <template for:each = {opportunityList.data} for:item = "opportunity" for:index = "itemIndex">
+                                            <tr key = {opportunity.Id}> 
+                                                <td class = "tdClass" colspan="2">
+                                                    <lightning-accordion-section name = {opportunity.Id} label = {opportunity.Name}>
+                                                        <lightning-button-menu slot="actions" alternative-text="Edit or View" icon-size="x-small" menu-alignment="auto">
+                                                            <lightning-menu-item value={opportunity.Id} onclick = {handleOpportunityEdit} label="Edit"></lightning-menu-item>
+                                                            <lightning-menu-item value={opportunity.Id} onclick = {recordDetailPage} label="View"></lightning-menu-item>
+                                                        </lightning-button-menu>
+                                                        <template for:each = {opportunity.Orders} for:item = "orderItem" >
+                                                            <div key = {orderItem.Id} class="slds-grid slds-gutters">
+                                                                <div class="slds-col slds-size_1-of-2">
+                                                                    <span>{orderItem.OrderNumber}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div key = {orderItem.Id} class="slds-grid slds-gutters">
+                                                                <div class="slds-col slds-size_1-of-2">
+                                                                    <span>{orderItem.TotalAmount}</span>
+                                                                </div>
+                                                            </div>
+                                                        </template>
+                                                    </lightning-accordion-section>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </lightning-accordion>
+                        </div>
+                    </lightning-card>
+                </template>
+            </template>
+        </template>
+    </div>
+</template>

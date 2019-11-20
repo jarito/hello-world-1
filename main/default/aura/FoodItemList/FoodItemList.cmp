@@ -1,0 +1,44 @@
+<aura:component controller = "FoodItemController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="foodItems" type="list"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="contactInfo" type="Contact"/>
+    <aura:attribute name="companyInfo" type="Organization"/>
+    <aura:registerEvent name="sendContact" type="c:EventForObject"/>
+    <aura:registerEvent name="addItem" type="c:FoodItemEvent"/>
+    <aura:handler event="c:FoodItemEventForCart" action="{!c.ckeckDeletedItem}"/>
+    <aura:handler name="init" value ="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:card title="Eternus Solutions Private Limited">
+        <p class="slds-p-horizontal_small"> ITI Road,Aundh,Pune 411007</p>
+        <p class="slds-p-horizontal_small"> Maharashtra, IN - 09028528000</p>
+    </lightning:card>
+
+    
+    <table class = "slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table_fixed-layout" >
+        <thead >
+            <tr class = "slds-text-heading_label">
+                <th scope = "col"><div class = "slds-truncate" title = "ID">ID</div></th>
+                <th scope = "col"><div class = "slds-truncate" title = "Item Name">Item Name</div></th>
+                <th scope = "col"><div class = "slds-truncate" title = "Price">Price</div></th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items = "{!v.foodItems}" var="item" indexVar="recordIndex">
+                <tr>
+                    <td class="slds-truncate" title="{!item.Id}">{!item.Id}</td> 
+                    <td class="slds-truncate" title="{!item.Name}">{!item.Name}</td>
+                    <td class="slds-truncate" title="{!item.Price__c}">{!item.Price__c}</td>                    
+                    <td data-arrival="{!recordIndex}" >
+                        <lightning:button
+                             aura:id="buttonId"             
+                             label="Add"
+                             name = "{!item.Id}"             
+                             onclick = "{!c.addItem}"
+                             disabled="false"
+                             /> 
+                    </td>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+</aura:component>

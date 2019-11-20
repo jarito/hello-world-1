@@ -1,0 +1,43 @@
+<aura:component controller = "getAccountList" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <aura:attribute name="record" type="Object" description="The record object to be displayed"/>
+    <aura:attribute name = "accountName" type = "String"/>
+    <aura:attribute name = "accountList" type = "List"/>
+    <aura:attribute name = "accountID" type = "String" access = "global"/>
+    <aura:attribute name = "recordId" type = "String" access="global"/>
+    <aura:attribute name = "selectedAccountId" type = "String" />
+    <aura:attribute name = "opportunityList" type = "List"/>
+    <aura:attribute name = "Columns" type="List" />
+    <aura:attribute name = "accColumns" type="List" />
+    <aura:attribute Name = "selItem" type="Object" access="global"/>
+    <aura:attribute name = "simpleRecord" type = "Object" />
+    <aura:attribute name="recordError" type="String"/>   
+    <aura:registerEvent name="AccountIdEvent" type="c:AccountRecordId" />
+    <aura:registerEvent name="recordIdEvent" type="c:MyRecordDetailEvent" />
+    <lightning:overlayLibrary aura:id="overlayLib" />  
+    
+    <div class="slds-p-top_none"> 
+        <lightning:card>
+            <div class="slds-m-bottom_none slds-p-left_medium slds-size_medium alignmentClass ">
+                <lightning:input type = "search"
+                                 label = "Search for Accounts:" 
+                                 name = "Account Name" 
+                                 aura:id = "inputCmp"
+                                 value = "{!v.accountName}"
+                                 onchange = "{!c.getAccounts}"
+                                 class = "inputClass"/>
+            </div>
+            <aura:if isTrue="{!v.accountList.length > 0}"> 
+                <div class="slds-m-bottom_none slds-p-left_medium slds-size_medium " >
+                    <ul class="slds-listbox slds-listbox_vertical slds-dropdown  slds-dropdown_left  slds-dropdown_medium">
+                        <aura:iteration items="{!v.accountList}" var="acc" indexVar="i">
+                            <li class="slds-listbox__item" data-selectedIndex="{#i}" onclick = "{!c.itemSelected}">
+                                {!acc.Name}
+                                <!--<a onclick="{!c.getCityDetails}" data-placeid="{!prediction.place_id}">{!prediction.description}</a>-->
+                            </li>
+                        </aura:iteration>
+                    </ul>
+                </div>   
+            </aura:if>
+        </lightning:card> 
+    </div>
+</aura:component>

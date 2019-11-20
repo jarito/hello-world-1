@@ -1,0 +1,130 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name="options" type="List" default="[ 	{'label': 'Name', 'value': 'FirstName'},
+                                                            {'label': 'Fellowship Year', 'value': 'Fellowship_Year__c'},
+                                                            {'label': 'Fellowship Country', 'value': 'Fellowship_Country__c'},
+                                                            {'label': 'Current City', 'value': 'Current_City__c'},
+                                                            {'label': 'Current Country', 'value': 'Current_Country__c'},
+                                                            {'label': 'University', 'value': 'University__c'},
+                                                            {'label': 'Degree', 'value': 'Degree__c'},
+                                                            {'label': 'Areas of Skills', 'value': 'Areas_of_Skills__c'},
+                                                            {'label': 'Sector', 'value': 'Sector__c'},
+                                                            {'label': 'Industry', 'value': 'Industry__c'},
+                                                            {'label': 'Organization', 'value': 'Organization__c'},                                               
+                                                        ]"/>
+    <aura:attribute name = "criteriaOptions" type = "List" default = "[	{'label': 'equals', 'value': 'equals'},
+                                                                      {'label': 'contains', 'value': 'contains'},                                               
+
+                                                                      ]"/>
+    <aura:attribute name = "count" type = "Integer" default = "1"/>
+    <aura:attribute name = "picklist1"  type = "list" />
+    <aura:attribute name = "picklist2"  type = "list" /> 
+    <aura:attribute name = "picklist3"  type = "list" /> 
+    <aura:attribute name = "componentList"  type = "list" default = "{ sobjectType : 'Account',
+                                                                       FieldName : '',
+                                                                       CriteriaName : '',		
+                                                                       ValueEntered : '' }" />
+    <aura:attribute name = "defaultFilter" 
+                    type = "Map" 
+                    default = "{ 
+                                   sobjectType : 'Account',
+                                   FieldName : '',
+                                   CriteriaName : '',		
+                                   ValueEntered : '' 
+                               }"/>
+    
+    <aura:handler name = "init"  action = "{!c.doInit}" value = "{!this}" />
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_12-of-12">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col">
+                    <div class="slds-grid slds-wrap">
+                    	<div class="slds-col slds-size_3-of-12 slds-p-horizontal_medium">
+                            <lightning:combobox name="progress"
+                                                value="acc.FieldName" 
+                                                placeholder="Select Field" 
+                                                options="{! v.options }" 
+                                                label="Filter 1 :"
+                                                onchange="{! c.handleChange }"/>
+                        </div>
+                        <div class="slds-col slds-size_2-of-12 slds-p-horizontal_medium">
+                            <lightning:combobox name="progress"
+                                                value="acc.CriteriaName" 
+                                                placeholder="Select Criteria" 
+                                                options="{! v.criteriaOptions }" 
+                                                label="Select criteria :"
+                                                onchange="{! c.criteriaHandleChange }"/>
+                        </div>
+                        <div class="slds-col slds-size_3-of-12 slds-p-horizontal_medium">
+                            <lightning:input aura:id="filterInput" label=" Enter value: " value = "{!v.defaultFilter.ValueEntered}" placeholder = "Enter Value" />
+                        </div>
+                        <div class="slds-col slds-size_4-of-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div>
+    	<table>
+        	<thead>
+            </thead>
+            <tbody> 
+                <aura:if isTrue = "{!not(empty(v.componentList))}">
+                    <aura:iteration items="{!v.componentList}" var="acc" indexVar="index">
+                        <tr>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_12-of-12">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col" >
+                                            <td class="slds-col slds-size_3-of-12 slds-p-horizontal_medium">
+                                                <div >
+                                                    <lightning:combobox name="progress"
+                                                                        value="{!acc.FieldName}" 
+                                                                        placeholder="Select Field" 
+                                                                        options="{! v.options }" 
+                                                                        label="Filter 1 :"
+                                                                        onchange="{! c.handleChange }"/>
+                                                </div>
+                                            </td>
+                                            <td class="slds-col slds-size_2-of-12 slds-p-horizontal_medium">
+                                                <div >
+                                                    <lightning:combobox name="progress"
+                                                                        value="{!acc.CriteriaName}" 
+                                                                        placeholder="Select Criteria" 
+                                                                        options="{! v.criteriaOptions }" 
+                                                                        label="Select criteria :"
+                                                                        onchange="{! c.criteriaHandleChange }"/>
+                                                </div>
+                                            </td>
+                                            <td class="slds-col slds-size_3-of-12 slds-p-horizontal_medium">
+                                                <div >
+                                                    <lightning:input aura:id="filterInput" value = "{!acc.ValueEntered}" label=" Enter value: " placeholder = "Enter Value"  />
+                                                </div>
+                                            </td>
+                                            <td class="slds-col slds-size_4-of-12 slds-p-horizontal_xxx-small">
+                                            	<div class="slds-p-top_none ">
+                                                	<lightning:buttonIcon variant="bare"
+                                                                          iconName="utility:delete"
+                                                                          iconClass = "deleteIcon"
+                                                                          size="large" 
+                                                                          onclick="{!c.handleDeleteRow}"
+                                                                          alternativeText="Delete filter"
+                                                                          value = "{!index}" />
+                                                </div>
+                                            </td>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </tr>
+                    </aura:iteration>
+                </aura:if>
+            </tbody>
+        </table>
+    </div>
+    <div class="slds-p-left_small">
+        <br/>
+        <lightning:button variant="brand" label="Add Filter" title="Add Filter" onclick="{!c.addFilter}" />
+        <!--<lightning:button variant="brand" label="Clear Filters" title="Clear Filters" onclick="{!c.clearFilters}" />-->
+    </div>
+    
+</aura:component>

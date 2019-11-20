@@ -1,0 +1,44 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name = "searchResultList"  type = "list" access = "public"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name = "message"  type = "String" />
+    
+    <aura:handler event="c:RecordIdEvent" action="{!c.getSearchList}" />
+    
+    <p id = "welcomeMSGId">{!v.message}</p>
+    <aura:if isTrue="{!not(empty(v.searchResultList))}">
+        <div class = "slds-p-left_large"><br/>
+    		<lightning:datatable keyField="id"
+                                 data="{!v.searchResultList }"
+                                 columns="{!v.columns }"
+                                 hideCheckboxColumn="true"/>	
+    	</div >
+        
+        <div class = "slds-p-left_large"><br/>
+            <table>
+            	<thead>
+                	<tr>
+                    	<td>Name .</td>
+                        <td>Email</td>
+                        <td>Current Country</td>
+                        <td>Current City</td>
+                        <td>Phone</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.searchResultList}" var="obj" indexVar="index">
+                    	<aura:iteration items="{!obj.Users}" var="userObj" indexVar="index">
+                            <tr>
+                                <td><a href="{!'custom-profile/?id=' +userObj.Id}">{!obj.FirstName}</a></td>
+                                <td>{!obj.Email__c}</td>
+                                <td>{!obj.Current_Country__c}</td>
+                                <td>{!obj.Current_City__c}</td>
+                                <td>{!obj.Phone}</td>
+                            </tr>
+                        </aura:iteration>    
+                    </aura:iteration>
+                </tbody>
+            </table>
+        </div>
+    </aura:if>
+</aura:component>

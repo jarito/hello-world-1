@@ -1,0 +1,11 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name = "messageB" type = "string" default = "This is P"/>
+    <aura:attribute name = "messageNew" type = "string" />
+    <aura:handler name = "testComponent" event="c:TestEventComponent" action="{!c.handleEventB}"/>
+    <h1>Hello B</h1>
+    <p>Message in B : {!v.messageB}</p> 
+    <h4>Comp B</h4>
+    <lightning:button label = "Update B" onclick = "{!c.updateB}"/>
+    <c:ComponentC  messageC = "{!v.messageB}"/>
+    <p>Message B : {!v.messageNew}</p>
+</aura:component>

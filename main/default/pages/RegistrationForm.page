@@ -1,0 +1,63 @@
+<apex:page controller="RegistrationFormController" showHeader="true" sidebar="true">
+    <apex:form >
+        <apex:pageBlock id="PageBlock1">
+            <apex:pageBlockSection title="Event Date" columns="2">
+                <apex:outputField value="{!guest.Start_Date__c}"/>
+                <apex:inputField value="{!guest.End_Date__c}" >
+                    <apex:actionSupport event="onchange"  action="{!getEventList}" reRender="PageBlock1">
+                    </apex:actionSupport>
+                </apex:inputField>
+            </apex:pageBlockSection>
+             <apex:pageBlockSection title="Event and Group Code Selection" columns="2">
+                <apex:OutputLabel value="Select Event" />
+                <apex:SelectList size="1"  value="{!selectedEvent}">
+                <apex:actionSupport event="onclick" action="{!getCodePackageList}" reRender="grpCodeId ">
+                </apex:actionSupport>  
+                <apex:SelectOptions value="{!eventList}" />
+                </apex:SelectList>
+            </apex:pageBlockSection> 
+        </apex:pageBlock>
+        <apex:pageBlock id="grpCodeId">
+            <apex:pageBlockSection >
+            
+                <apex:OutputLabel value="Select Group Code" />
+                <apex:SelectList size="1" value="{!selectedGroupCode}" >
+                <apex:actionSupport event="onclick" reRender="lookup1">
+                </apex:actionSupport>  
+                <apex:SelectOptions value="{!codePackageList}" />
+                </apex:SelectList>            
+            </apex:pageBlockSection>
+            <!--    <apex:outputPanel id="lookup1">
+                    <apex:outputField value="{!guest.Event__c}" />
+                </apex:outputPanel>     -->                
+            <!--</apex:pageBlock>-->
+
+            <apex:outputPanel id="lookup1">
+                <apex:pageMessages id="showmsg"></apex:pageMessages>
+                <apex:pageBlockSection rendered="{!if(selectedGroupCode!=null,true,false)}">
+             <!--   <apex:outputField value="{!guest.Event__c}" />
+                    <apex:outputField value="{!guest.Group_Code__c}" /> -->
+                    <apex:inputField value="{!guest.Name}" /> 
+                    <apex:inputField value="{!guest.Last_Name__c}"/>
+                    <apex:inputField value="{!guest.Email__c}"/>
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+            <apex:actionFunction name="calldoRegister" action="{!doRegister}"/>
+
+            <apex:commandButton value="Register"  onclick="doConfirm()" reRender="showmsg" >
+            </apex:commandButton>            
+        </apex:pageBlock>
+    </apex:form> 
+    <script>
+        function hello(){
+            alert('Hello .... !'); 
+        } 
+        function doConfirm(){
+            var r = confirm("Are you Sure ?");
+            if(r == true) {                
+                calldoRegister();
+            }
+        }                 
+    </script>
+
+</apex:page>

@@ -1,0 +1,106 @@
+<apex:page standardController="Order" renderAs="pdf"  standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false" showHeader="false" sidebar="false">
+    <apex:form >
+    <html>
+        <body style=" page-break-after: avoid;overflow:hidden;">       
+            <div class="outline" style= " position:relative;
+                          top :0;
+                          left:0px;
+                          width:100%;
+                          height:850px;
+                          border: 2px solid #1f78c6;overflow:hidden; page-break-after: avoid;">
+                <div class="companyInfo" style="position:relative;
+                            top:60px;
+                            left:58px;
+                            width:220px;
+                            height:140px;font-family:Arial Unicode MS; ">
+                    <h3 class = "companyTitle" >{!$Organization.Name}</h3>
+                    {!$Organization.Street}
+                    <br>{!$Organization.City} , {!$Organization.State} , {!$Organization.PostalCode}</br>
+                    {!$Organization.Phone}
+                </div>  
+
+                <div class="invoiceTitle" style="position:absolute;
+                                                 top:25px;
+                                                 left:340px;
+                                                 right:250px;
+                                                 width:300px;
+                                                 height:140px;
+                                                 font-family:Arial Unicode MS;" > 
+                    <h1 class = "invHeading" style="text-align:right;color:#1f78c6;font-size:43px;font-style:bold;">INVOICE</h1>
+                    
+                    <table class = "date" 
+                           style=" width:100%;border: 1.025px solid #A0A0A0	; border-collapse: collapse;" 
+                           cellspacing="0" >
+                        <tr>
+                            <th style="text-align:center;border: 1.025px solid #A0A0A0	;background-color:#D4DAF2;font-family:Arial Unicode MS;">INVOICE#</th>
+                            <th style="text-align:center;border: 1.025px solid #A0A0A0	;background-color:#D4DAF2;font-family:Arial Unicode MS;">DATE</th>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;border: 1.025px solid #A0A0A0	;font-family:Arial Unicode MS;">{!Order.OrderNumber}</td>
+                            <td style="text-align:center;border: 1.025px solid #A0A0A0	;font-family:Arial Unicode MS;">16/11/2018</td>
+                        </tr>
+                    </table>
+                </div>                          
+
+                <div class="billTo" style=" position:relative;
+                                            top:70px;
+                                            left:58px;
+                                            width:230px;
+                                            height:130px;
+                                            font-family:Arial Unicode MS; ">
+                      <h4 class = "billToHeader" style=" border: 1.53px solid #888888	;background-color:#D4DAF2; font-family:Arial Unicode MS;"> &nbsp; &nbsp;BILL TO</h4>
+                      &nbsp;&nbsp;{!Order.CustomerAuthorizedBy.Name}
+                      <br>&nbsp;&nbsp;{!Order.Account.Name}</br><br/>
+                      &nbsp;&nbsp;{!Order.Account.BillingStreet}
+                      <br>&nbsp;&nbsp;{!Order.Account.BillingCity} , {!Order.Account.BillingState} , {!Order.Account.BillingPostalCode}</br>
+                      &nbsp;&nbsp;{!Order.CustomerAuthorizedBy.Phone}                    
+                </div>
+
+                <div class = "descTable" style="position:relative;
+                                                top:130px;
+                                                left:58px;
+                                                width:500px;
+                                                height:290px;">
+                    <table class="descriptionTable"  style="width:586px; border: 1.025px solid #909090	; border-collapse: collapse;" cellspacing="0" >
+                        <tr>
+                            <th width="650px" style="text-align:left;border: 1.025px solid #909090;border-right: 0.2px solid #D4DAF2; background-color:#D4DAF2; font-family:Arial Unicode MS;">&nbsp;&nbsp;&nbsp;Description</th>
+                            <th width="150px" style="text-align:center; background-color:#D4DAF2;border-bottom: 1.025px solid #909090;border-top: 1.025px solid #909090; font-family:Arial Unicode MS;"></th>
+                            <th width="200px"  style="text-align:right;border: 1.025px solid #909090; background-color:#D4DAF2; font-family:Arial Unicode MS;">Amount&nbsp;&nbsp;</th>
+                        </tr>
+                        <tr style="height:250px" >
+                            <td  style="text-align:left; vertical-align:top;border: 1.025px solid #909090;border-right: 0.2px solid white; font-family:Arial Unicode MS;">
+                                <apex:repeat value="{!Order.OrderItems}" var="items">
+                                     &nbsp;<apex:outputLabel value=" {!items.Product2.Name}"/><br/>
+                                </apex:repeat>
+                            </td>
+                            <td style="text-align:left; border-top: 1.025px solid #909090	;vertical-align:top;font-family:Arial Unicode MS;" ></td>
+                            <td style="text-align:right;border: 1.025px solid #909090	; vertical-align:top;font-family:Arial Unicode MS;">
+                                <apex:repeat value="{!Order.OrderItems}" var="items">
+                                    <apex:outputLabel value="{!items.TotalPrice}  "/><br/>
+                                </apex:repeat>                            
+                            </td>
+                        </tr>
+                        <tr >
+                            <td  style="text-align:center;border: 1.025px solid #909090	;border-right: 1.025px solid #909090	;  font-family:Arial;font-style : italic;">Thank you for your business !</td>
+                            <td  style="text-align:center;border-bottom: 1.025px solid #909090;border-top: 1.025px solid #909090; font-family:Arial Unicode MS;">TOTAL</td>
+                            <td  style="text-align:right;border: 1.025px solid #909090	;border-left: 0.2px solid white;  font-family:Arial Unicode MS;"> ${!Order.TotalAmount}&nbsp;</td>
+                        </tr>
+
+                    </table>        
+                </div>
+                <div class = "contactInfo" style="position:relative;
+                                                    top:170px;
+                                                    left:58px;
+                                                    width:500px;
+                                                    height:100px;
+                                                    font-family:Arial Unicode MS;
+                                                    font-size:13px;page-break-after: avoid;">
+                 <p style="text-align:center;page-break-after: avoid;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you have any questions about this invoice, please contact<br/>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!$User.FirstName}&nbsp;{!$User.LastName}&nbsp;,{!$User.MobilePhone}&nbsp;,{!$User.Email}</p>
+                </div>
+
+            </div>
+        </body>
+    </html>
+    </apex:form>
+</apex:page>

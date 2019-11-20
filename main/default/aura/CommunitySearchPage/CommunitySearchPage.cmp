@@ -1,0 +1,55 @@
+<aura:component controller = "communityUserController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="options" type="List" default="[ 	{'label': 'Name', 'value': 'FirstName'},
+                                                            {'label': 'Fellowship Year', 'value': 'Fellowship_Year__c'},
+                                                            {'label': 'Fellowship Country', 'value': 'Fellowship_Country__c'},
+                                                            {'label': 'Current City', 'value': 'Current_City__c'},
+                                                            {'label': 'Current Country', 'value': 'Current_Country__c'},
+                                                            {'label': 'University', 'value': 'University__c'},
+                                                            {'label': 'Degree', 'value': 'Degree__c'},
+                                                            {'label': 'Areas of Skills', 'value': 'Areas_of_Skills__c'},
+                                                            {'label': 'Sector', 'value': 'Sector__c'},
+                                                            {'label': 'Industry', 'value': 'Industry__c'},
+                                                            {'label': 'Organization', 'value': 'Organization__c'},                                               
+                                                        ]"
+    />
+    <aura:attribute name = "criteriaOptions" type = "List" default = "[	{'label': 'equals', 'value': 'equals'},
+                                                                    	{'label': 'contains', 'value': 'contains'},                                               
+                                                                 	  ]"
+    />
+    
+    <aura:attribute name = "picklist1"  type = "list" />
+    <aura:attribute name = "picklist2"  type = "list"/> 
+    <aura:attribute name = "picklist3"  type = "list"/> 
+    <aura:attribute name = "componentList" 
+                    type = "list" />
+    <aura:attribute name = "defaultFilter" 
+                    type = "Map"
+                    default = "{ 
+                                   sobjectType : 'Account',
+                                   FieldName : '',
+                                   CriteriaName : '',		
+                                   ValueEntered : 'Andy' 
+                               }" />
+    
+    <aura:registerEvent name="RecordIdEvent" type="c:RecordIdEvent" />
+    
+    <div class = "slds-p-left_medium">
+    	<div class="slds-text-heading_large  "> GHC Community Search</div>
+        
+        <div class="slds-text-heading_medium  "> Set Filters </div>
+
+        <c:filterComponent defaultFilter = "{!v.defaultFilter}" componentList = "{!v.componentList}"  picklist1 = "{!v.picklist1}" picklist2 = "{!v.picklist2}" picklist3 = "{!v.picklist3}" />
+        
+        <br/>
+        
+        <!--Use method name searchFellows when filter is used with same component without creating separate component for filters-->
+        <div class = "slds-p-left_small">
+        	<lightning:button variant="brand" 
+                              label="Search" 
+                              title="Search" 
+                              onclick="{!c.filterComponentMethod}"/>
+        </div>
+        
+    </div>
+</aura:component>

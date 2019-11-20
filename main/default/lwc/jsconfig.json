@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "c/helloWorld": [
+                "helloWorld/helloWorld.js"
+            ],
+            "c/myFirstWebComponent": [
+                "myFirstWebComponent/myFirstWebComponent.js"
+            ],
+            "c/myRecords": [
+                "myRecords/myRecords.js"
+            ],
+            "c/pubsub": [
+                "../staticresources/pubsub/pubsub/pubsub.js"
+            ],
+            "c/recordDetail": [
+                "recordDetail/recordDetail.js"
+            ],
+            "c/skillSet": [
+                "skillSet/skillSet.js"
+            ]
+        },
+        "experimentalDecorators": true
+    },
+    "include": [
+        "**/*",
+        "../../../../.sfdx/typings/lwc/**/*.d.ts"
+    ],
+    "typeAcquisition": {
+        "include": [
+            "jest"
+        ]
+    }
+}

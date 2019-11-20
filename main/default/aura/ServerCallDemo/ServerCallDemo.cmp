@@ -1,0 +1,43 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller = "ServerCallDemoApex" >
+    <aura:attribute name = "accountList" type = "list" />
+    <aura:attribute name = "contactList" type = "list" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+   
+    <!--Display Accounts-->
+    <table>
+    	<thead>
+        	<tr>
+            	<th>Name</th>
+                <th>Website</th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.accountList}" var="item">
+                <tr>
+                	<td>{!item.Name}</td>
+                    <td>{!item.Website}</td>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+    <br />
+    <!--Display Contacts-->  
+    <table>
+    	<thead>
+        	<tr>
+            	<th>Name</th>
+                <th></th>
+                <th>Account</th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.contactList}" var="con">
+                <tr>
+                	<td colspan = "2">{!con.FirstName} &nbsp;&nbsp; {!con.LastName}</td>
+                    <td>{!con.Account.Name}</td>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+</aura:component>

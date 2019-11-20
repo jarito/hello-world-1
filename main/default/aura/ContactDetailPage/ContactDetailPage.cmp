@@ -1,0 +1,57 @@
+<!--*****************************************************************************************
+* Component Name : ContactDetailPage
+* Description: 
+* Version History:
+* Version  Developer Name    Date(dd/mm/yyyy)    Details
+* 1.0      Joyce Joseph                         Initial development
+*********************************************************************************************-->
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller = "ContactDetailApexController" >
+
+    <aura:attribute name="caseRecordId" type="String" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="recordError" type="String"/> 
+    <aura:attribute name="fieldsList" type="String[]" />
+    <aura:attribute name="fieldsetName" type="string" />
+    <aura:attribute name="numOfColumns" type="String" default="4"/>
+
+    <!--<aura:attribute name="contactRecord" type="Object" /> -->
+    
+    <aura:handler name="init" value ="{!this}" action="{!c.doInit}"/>
+    <!-- <p>{!v.caseRecordId}</p> -->
+     
+    <lightning:overlayLibrary aura:id="overlayLib" />
+
+ 
+    <div class="container">
+    
+    
+        <lightning:card title="Contact Details" iconName = "standard:contact" class="cardtitle">
+   
+            <aura:set attribute="actions">
+                <div class="slds-no-flex">    
+                    <lightning:button   label="Edit" 
+                                        title="Edit" 
+                                        variant="brand"
+                                        value="{!v.recordId}"
+                                        onclick="{! c.editContactRecord }"/>
+                </div>
+            </aura:set>  
+            
+            <div class = "slds-p-left_x-small">
+                <lightning:recordForm
+                                    recordId="{!v.recordId}"
+                                    objectApiName="Contact"
+                                    fields="{!v.fieldsList}"
+                                    columns="{!v.numOfColumns}"
+                                    mode="View"
+                                    onsuccess="{!c.myAction}"/>
+            </div>
+          
+              
+        </lightning:card>
+        
+    
+    </div> 
+    
+
+</aura:component>

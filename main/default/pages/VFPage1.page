@@ -1,0 +1,26 @@
+<apex:page standardController="Account" extensions="VFPage1Controller" >
+    <apex:form >    
+        <apex:pageBlock title="Account Details" >
+            <apex:pageBlockSection title="Account Details" >
+                <apex:outputField value=" {!account.Name}"/>
+                <apex:outputField value="{!account.Type}"/>
+                <apex:outputField value="{!account.Industry}"/>
+                <apex:outputField value="{!account.Rating}"/>
+                <apex:outputField value="{!account.Phone}"/>
+            </apex:pageBlockSection>   
+        </apex:pageBlock>
+        <apex:pageBlock >
+            <apex:pageBlockTable value="{!Account.Attachments}" var="attachment">
+                <apex:column >
+                    <apex:commandLink action="{!deleteAttachment}" value="delete">
+                        <apex:param value="{!attachment.Id}" assignTo="{!accountID}" name="accountID"/>
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column value="{!attachment.Name}"/>
+                <apex:column value="{!attachment.ContentType}"/>
+                <apex:column value="{!attachment.CreatedById}"/>
+             </apex:pageBlockTable>
+            <apex:commandButton action="{!VFStep2}" value="Edit"/>   
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

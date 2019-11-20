@@ -1,0 +1,55 @@
+<!--<aura:component controller = "Camping" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name = "item" type = "Camping_Item__c" />
+    <aura:attribute name = "items" type = "Camping_Item__c[]" />
+    <aura:attribute name = "newItem" type = "Camping_Item__c" 
+                    default = "{ 'sobjectType': 'Camping_Item__c',
+                          	     'Price__c': 0,
+                        	  	 'Quantity__c': 0
+                               }"  />
+    <aura:attribute name = "message" type = "string" default = ""/>
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<p>Message of the day: {!v.message}</p>
+    <p>
+        Name: {!v.item.Name}
+    </p>
+    <p>
+        <lightning:formattedNumber  value = "{!v.item.Price__c}" style = "currency"  />
+    </p>
+    <p>
+        <lightning:formattedNumber value = "{!v.item.Quantity__c}"  />
+    </p>    
+
+    
+    <lightning:button  label="Packed!" onclick="{!c.packItem}" disabled="false"/>
+    
+</aura:component>-->
+
+<aura:component controller = "Camping" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global"  >
+
+    <aura:attribute name="item" type="Camping_Item__c"/>
+
+    <p>Name:
+
+        <ui:outputText value="{!v.item.Name}"/>
+
+    </p>
+
+    <p>Quantity:
+
+        <ui:outputNumber value="{!v.item.Quantity__c}"/>
+
+    </p>
+
+    <p>Price:
+
+        <ui:outputCurrency value="{!v.item.Price__c}"/>
+
+    </p>
+
+    <p>Packed?:
+
+        <ui:outputCheckbox value="{!v.item.Packed__c}"/>
+
+    </p>
+
+</aura:component>

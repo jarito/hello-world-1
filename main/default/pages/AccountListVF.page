@@ -1,0 +1,48 @@
+<apex:page controller="AccountListVFController">
+    <apex:form >
+        <apex:pageBlock title="My Accounts">
+            <table>
+                <apex:repeat value="{!accountList}" var="item">
+                    <tr>
+                        <td>{!item.name}</td>
+                        <td> 
+                            <apex:commandButton action="{!getContacts}" value="{!sign}" id="signBlock" reRender="ifPanel,signBlock">
+                                <apex:param name="MS_Item" value="{!item.id}" assignTo="{!accountId}"/>
+                            </apex:commandButton>
+                        </td>  
+                    </tr>
+                    <tr>
+                       <td>
+                         <apex:outputPanel id="ifPanel">
+                             <table >
+            					<apex:repeat value="{!contactList}" var="con">
+                                 <tr>
+                                    <td>{!con.LastName}</td>
+                                    <td>
+                                        <apex:commandButton action="{!getObject}" value="{!sign}" reRender="ifPanel">
+                                          	<apex:param assignTo="{!contactId}"  value="{!con.Id}" name="selectedII"/>
+                                   		</apex:commandButton>
+                                    </td>
+                                 </tr>
+                               </apex:repeat>
+                           </table>
+                       </apex:outputPanel>
+                       </td>
+                    </tr>
+                   <!-- <tr>
+                        <apex:pageBlock id = "panel2">
+                            <apex:repeat value="{!contactList}" var="var">
+                                <tr>
+                                    <td>{!var.LastName}</td>
+                                </tr>
+                        	</apex:repeat>
+                        </apex:pageBlock>
+                    </tr>-->
+                </apex:repeat>       
+            </table>
+        </apex:pageBlock>
+        <apex:outputPanel id="panel3">
+
+		</apex:outputPanel>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,61 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name = "opportunityId" type = "String" access = "global" />
+    <aura:attribute name = "record" type = "Object" access= "global" />
+    <aura:attribute name = "simpleRecord" type = "Object" access= "global"/>
+    <aura:attribute name="recordError" type="String"/>
+    <lightning:overlayLibrary aura:id="overlayLib" />
+    <aura:handler action = "{!c.handleOpportunityId}" event = "c:OpportunityRecordId" />
+    <aura:registerEvent name = "appEvent"  type="c:SampleEvent"/>
+    
+    <force:recordData aura:id="recordHandler"
+         recordId="{!v.opportunityId}"
+         layoutType="FULL"
+         targetRecord="{!v.record}"
+         targetFields="{!v.simpleRecord}"
+         targetError="{!v.recordError}"
+         recordUpdated="{!c.handleRecordUpdated}"
+    />
+    
+	<div class="slds-m-top_large hideDiv" >
+        <aura:if isTrue="{!not(empty(v.opportunityId))}">
+            <lightning:card iconName="standard:opportunity" title="Opportunity Details">
+                <aura:set attribute="actions">
+                <!--<lightning:button variant="brand" label="Edit" onclick="{!c.editOpportunity}" value="{!v.opportunityId}"/> -->
+                    <lightning:buttonIcon iconName="utility:edit" 
+                                          size="medium" 
+                                          variant="bare" 
+                                          onclick="{! c.editOpportunity }" 
+                                          value="{!v.opportunityId}"
+                                          alternativeText="Edit Opportunity"
+                                          iconClass="dark"/> <br/>                	
+                </aura:set>
+                <lightning:layout>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">Opportunity Name</p>
+                            <p> {!v.simpleRecord.Name} </p>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">StageName</p>
+                            <p> {!v.simpleRecord.StageName} </p>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">Amount</p>
+                            <p> {!v.simpleRecord.Amount} </p>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">CloseDate</p>
+                            <p> {!v.simpleRecord.CloseDate} </p>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>        	
+            </lightning:card>       
+        </aura:if>     
+    </div>    
+</aura:component>

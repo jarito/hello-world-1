@@ -1,0 +1,20 @@
+<apex:page standardController="Case"  extensions="JobRequestController">  
+    <apex:form >
+        <apex:pageBlock title="Track your Job" >
+            <apex:pageBlockTable value="{!existingCases}" var="eachCase">
+                <apex:column headervalue="Case Number">
+                    <apex:OutputText value="{!eachCase.CaseNumber}" /> 
+                </apex:column>            
+                <apex:column headervalue="Job Type">
+                    <apex:inputText value="{!eachCase.Job_Type__c}" />
+                </apex:column>
+                <apex:column headervalue="Job Description">
+                    <apex:inputText value="{!eachCase.Job_Description__c}" />
+                </apex:column>                
+                <apex:column >
+                    <apex:commandLink action="{!updateRecord}" value="Update"/>                            
+                </apex:column>                                                                                   
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

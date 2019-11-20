@@ -1,0 +1,8 @@
+.hide{
+    display:none;
+}
+
+div.slds-accordion__summary{
+    padding: 1px;
+    background-color : lightblue;
+}

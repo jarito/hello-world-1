@@ -1,0 +1,27 @@
+<apex:page standardController="Case"  extensions="JobRequestController">
+    <apex:form >
+        <apex:pageMessages id="showmsg"></apex:pageMessages>
+            <apex:pageBlock title="Job Request Form" id="blank">
+                <apex:pageBlockSection >
+                    <apex:OutputLabel value="Select Job Type" />
+                    <apex:SelectList value="{!selectedJob}" size="1" >         
+                    <apex:SelectOptions value="{!jobTypes}"/>
+                    </apex:SelectList>                
+                </apex:pageBlockSection>
+                <apex:pageBlockSection columns="1">
+                    <apex:outputLabel value="Give Job Description"  />
+                    <apex:inputText value="{!caseObj.Job_Description__c}"/>                               
+                </apex:pageBlockSection>
+                    <apex:commandButton action="{!save}" value="Submit and New" onclick="successMessage();return true"  />
+                    <apex:commandButton action="{!updateJob}" value="Track and Update Job" />            
+                <apex:pageBlockSection columns="1">
+                    <apex:outputLabel value=""  id="showMessage" />                                                 
+                </apex:pageBlockSection>         
+            </apex:pageBlock>    
+    </apex:form> 
+    <script>
+        function successMessage(){
+            document.querySelector("[id$='showMessage']").innerHTML = 'Your Job request has been submitted Successfully';
+        }
+    </script> 
+</apex:page>

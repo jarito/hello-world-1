@@ -1,0 +1,18 @@
+<apex:page standardController="Account" extensions="VFPage1Controller">
+    <apex:form >
+        <apex:pageBlock >
+           <apex:pageBlockSection title="Edit Account Details" columns="2">
+              <apex:outputField value=" {!account.Name}"/>
+              <apex:inputField value="{!account.Type}" id="accountType"/>
+              <apex:inputField value="{!account.Industry}" id="accountIndustry"/>
+              <apex:inputField value="{!account.Rating}" id="accountRating"/>
+              <apex:inputField value="{!account.Phone}" id="accountPhone"/>
+            </apex:pageBlockSection>         
+        </apex:pageBlock>
+        <apex:pageBlock >    
+             <apex:pageBlockSection >
+                <apex:commandButton action="{!VFStep3}" value="Next"/>
+             </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>  
+</apex:page>

@@ -1,0 +1,17 @@
+<apex:page standardController="Opportunity" recordSetVar="opportunities" >
+    <apex:form >
+        <apex:pageBlock id="contacts_List">
+           // <apex:pageBlockSection >
+                <apex:selectList value="{!filterId}" size="1">
+                    <apex:selectOptions value="{!ListViewOptions}">
+                    <apex:actionSupport event="onchange" reRender="contacts_List"/>  
+                    </apex:selectOptions>                   
+                </apex:selectList>
+                <apex:pageBlockTable value="{!opportunities}" var="opp" >
+                    <apex:column value="{!opp.Name}"/>
+                    <apex:column value="{!opp.Amount}"/>
+                </apex:pageBlockTable>
+            //</apex:pageBlockSection>
+        </apex:pageBlock>>
+    </apex:form>
+</apex:page>

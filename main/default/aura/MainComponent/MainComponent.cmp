@@ -1,0 +1,8 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="currentRecordId" type="String"/>
+    <aura:handler name="init" value ="{!this}" action="{!c.doInit}"/>
+    <aura:if isTrue="{!v.currentRecordId != null}">
+        <c:FoodItemList recordId = "{!v.currentRecordId}" />
+        <c:FoodItemCart recordId = "{!v.currentRecordId}"/>
+    </aura:if>
+</aura:component>

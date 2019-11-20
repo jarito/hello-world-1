@@ -1,0 +1,6 @@
+<apex:page showHeader="false">
+  <h1>DisplayImage</h1>
+  <apex:form >
+      <apex:image id="displayImage" url=" https://developer.salesforce.com/files/salesforce-developer-network-logo.png "/>
+  </apex:form>
+</apex:page>

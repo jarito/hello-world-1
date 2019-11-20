@@ -1,0 +1,22 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="disabled" type="Boolean" default="false" />
+    <aura:attribute name="recordId" type="String"  />
+    <lightning:overlayLibrary aura:id="popuplib"/>
+    
+    <lightning:recordEditForm onsubmit="{!c.handleSubmit}"
+                              onsuccess="{!c.handleSuccessMessage}"
+                              recordId="{!v.recordId}"
+                              objectApiName="OrderItem" aura:id="editForm">
+        <!-- the messages component is for error messages -->
+        <lightning:messages />
+        
+        <lightning:inputField fieldName="Product2Id" />
+        <lightning:inputField fieldName="Product2.ProductCode" />
+        <lightning:inputField fieldName="Quantity" />
+        <lightning:inputField fieldName="UnitPrice" />
+        <div class="slds-m-top_medium">
+            <lightning:button disabled="{!v.disabled}" variant="brand" type="submit" name="save" label="Save" />
+            <lightning:button disabled="{!v.disabled}" variant="brand" type="text" name="cancel" label="Cancel" onclick = "{!c.handleCancel}" />
+        </div>
+    </lightning:recordEditForm>    
+</aura:component>

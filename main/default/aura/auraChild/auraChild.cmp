@@ -1,0 +1,14 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name = "listOfAccounts" type = "list"/>
+    <aura:attribute name = "Columns" type = "list"/>
+    <aura:method name = "demoMethod" action = "{!c.childMethod}" access = "public">
+        <aura:attribute name = "accountList" type = "list"/>
+    </aura:method>
+	<aura:if isTrue = "{!not(empty(v.listOfAccounts))}">
+        <lightning:card iconName="standard:account" title="List of Accounts">
+            <!-- Account list goes here -->
+            <lightning:datatable data="{!v.listOfAccounts}" columns="{!v.Columns}" keyField="Id" hideCheckboxColumn="true"/>
+        </lightning:card>     
+    </aura:if>    
+    
+</aura:component>

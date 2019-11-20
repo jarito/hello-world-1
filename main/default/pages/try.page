@@ -1,0 +1,100 @@
+<apex:page docType="html-5.0" standardStylesheets="false" showHeader="false" controller="AccountListVFController">
+<!--jQuery CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!--Salesforce Lightning Design System Static Resource-->
+<!--  -->
+<script>
+var j$ = jQuery.noConflict();
+</script>
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> 
+<head>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<!--The Salesforce Lightning Design System Wrapping Div with Scoping Class -->
+<div class="minerva18">
+  
+<fieldset class="slds-box slds-theme--default slds-container">
+  
+  <apex:form > 
+<!-- Single Section Wrapper With Three SLDS Sections, The Wrapper Div Class must be 'Minerva18SectionGroupSingle' -->
+<div class="Minerva18SectionGroupSingle" >
+<!--SLDS Section Start-->
+    <div class="slds-section">
+	 <table class="slds-section__title">
+        <apex:repeat value="{!accountList}" var="item">
+            <tr>
+                <td>{!item.name}</td>
+                <td> 
+				  
+                    <apex:commandButton action="{!getContacts}" value="{!sign}" id="signBlock" reRender="ifPanel,signBlock" styleClass="slds-button slds-section__title-action">
+                        <apex:param name="MS_Item" value="{!item.id}" assignTo="{!accountId}"/>
+						<svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+					
+				  </svg>
+                    </apex:commandButton>
+                </td>  
+            </tr>
+            <tr>
+                <td>
+					<div class="slds-section__content">
+						<apex:outputPanel id="ifPanel">
+                        <table >
+                            <apex:repeat value="{!contactList}" var="con">
+                                <tr>
+                                    <td>{!con.LastName}</td>
+                                    <td>
+                                        <apex:commandButton action="{!getObject}" value="{!sign}" reRender="ifPanel">
+                                            <apex:param assignTo="{!contactId}"  value="{!con.Id}" name="selectedII"/>
+                                        </apex:commandButton>
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                        </table>
+                    </apex:outputPanel>
+					</div>
+                    
+                </td>
+            </tr>
+        </apex:repeat>       
+    </table>
+</div>		
+<!--SLDS Section End-->  
+  
+</div>
+<!-- Single Section Wrapper End-->
+    </apex:form>
+</fieldset>
+  
+
+  
+</div>
+<script>
+/*SLDS Sections*/
+j$('.slds-section__content').hide();
+j$('.slds-section__title').find('button').find('svg').css('transition', '0.3s');
+j$('.slds-section__title').click(function(){
+    if(j$(this).parent().parent().hasClass('Minerva18SectionGroupSingle')){
+        if(j$(this).parent().hasClass('slds-is-open')){
+            j$(this).parent().removeClass('slds-is-open');
+            j$(this).parent().find('.slds-section__content').hide();
+        }
+        else{
+            j$(this).parent().parent().find('.slds-section').removeClass('slds-is-open');
+            j$(this).parent().parent().find('.slds-section__content').hide();
+            j$(this).parent().toggleClass('slds-is-open');
+            j$(this).parent().find('.slds-section__content').show();
+        }    
+    }
+    else{
+        j$(this).parent().toggleClass('slds-is-open');
+        if(j$(this).parent().hasClass('slds-is-open')){
+            j$(this).parent().find('.slds-section__content').show();
+        }else{
+            j$(this).parent().find('.slds-section__content').hide();
+        }
+    }
+});
+/*SLDS Sections*/
+</script>
+</html>
+</apex:page>

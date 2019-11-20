@@ -1,0 +1,108 @@
+<apex:page id="page" standardController="Account" recordSetVar="accounts" extensions="PM51Controller" >
+   <apex:image alt="cat" title="kitten"
+                url="{!$Resource.vfimagetest}" height="60" width="1100"/>
+    <apex:form id="form" >
+        <apex:pageBlock id="Block1">
+            <apex:pageBlockSection columns="1" id="PBSection">
+                <apex:outputLabel value="Search Account" for="account" id="opLabel">
+                </apex:outputLabel>
+                <apex:pageMessages id="showmsg"></apex:pageMessages>
+                <apex:inputText value="{!selectedAccount}" id="account" onkeypress="searchOnEnter(event)"/>
+                <apex:outputLabel id="output" />
+            </apex:pageBlockSection>
+            <apex:commandButton action="{!getAccountDetails}" value="Search Account"   />
+            
+            <apex:actionFunction action="{!getAccountDetails}" name="getAccountDetails"/>
+            
+            <apex:commandLink action="{!ClearList}" value="Clear" reRender="Block1" />
+            <apex:outputText value="{!countOFSearchResult}" />
+            <apex:pageBlockSection title="Account" rendered="{!if(resultantAccount.size > 0, true, false)}">
+                <apex:pageBlockTable value="{!resultantAccount}" var="account" columnsWidth="300px,300px" >
+                     <apex:column headerValue="Name">
+                            <apex:outputLink value="/{!account.Id}">
+                                {!account.Name}
+                            </apex:outputLink>
+                      </apex:column>
+                      <apex:column value="{!account.Phone}"/>
+                      </apex:pageBlockTable>
+             </apex:pageBlockSection>            
+         </apex:pageBlock>
+        
+            <apex:commandLink value="All" onclick="showHiddenChar('All')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="A" onclick="showHiddenChar('A')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="B" onclick="showHiddenChar('B')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="C" onclick="showHiddenChar('C')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;                        
+            <apex:commandLink value="D" onclick="showHiddenChar('D')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="E" onclick="showHiddenChar('E')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="F" onclick="showHiddenChar('F')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;                        
+            <apex:commandLink value="G" onclick="showHiddenChar('G')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;        
+            <apex:commandLink value="H" onclick="showHiddenChar('H')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;        
+            <apex:commandLink value="I" onclick="showHiddenChar('I')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp; 
+            <apex:commandLink value="J" onclick="showHiddenChar('J')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="K" onclick="showHiddenChar('K')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="L" onclick="showHiddenChar('L')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="M" onclick="showHiddenChar('M')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="N" onclick="showHiddenChar('N')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="O" onclick="showHiddenChar('O')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;            
+            <apex:commandLink value="P" onclick="showHiddenChar('P')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="Q" onclick="showHiddenChar('Q')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;            
+            <apex:commandLink value="R" onclick="showHiddenChar('R')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;            
+            <apex:commandLink value="S" onclick="showHiddenChar('S')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="T" onclick="showHiddenChar('T')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;            
+            <apex:commandLink value="U" onclick="showHiddenChar('U')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;            
+            <apex:commandLink value="V" onclick="showHiddenChar('V')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;            
+            <apex:commandLink value="W" onclick="showHiddenChar('W')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="X" onclick="showHiddenChar('X')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="Y" onclick="showHiddenChar('Y')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;
+            <apex:commandLink value="Z" onclick="showHiddenChar('Z')" action="{!showApexValue}" reRender="panel" status="myStatus"/>|&nbsp;            
+            <apex:inputhidden value="{!hiddenVal}" id="hidden"/>
+            
+            <apex:actionStatus id="myStatus" startText="Loading Account data………">
+                <apex:facet name="stop">
+                    <apex:outputpanel id="panel" style="height:250px;width:300px">
+                        <apex:pageBlock >
+                            <apex:pageBlockSection >
+                                <apex:pageBlockTable value="{!accounts}" var="account" columnsWidth="300px,300px">
+                                    <apex:column headerValue="Name">
+                                        <apex:outputLink value="/{!account.id}">
+                                        {!account.Name}
+                                        </apex:outputLink>
+                                    </apex:column>
+                                    <apex:column value="{!account.Phone}"/>
+                                    <apex:column headerValue="Website">
+                                        <apex:outputLink value="http://{!account.Website}" target="_blank"> {!account.Website}
+                                        </apex:outputLink>
+                                    </apex:column>
+                                </apex:pageBlockTable>     
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>
+                    </apex:outputpanel>
+                </apex:facet>
+            </apex:actionStatus>
+        </apex:form>
+    
+    <script>
+        function searchOnEnter(e){
+
+        if(key == 13){
+                getAccountDetails();
+                
+            }
+        }
+    
+    /*    function check(){
+            //console.log('{!$Component.page:form:Block1:PBSection.output}');
+           // var accountName = getElementById('page:form:Block1:PBSection:account').value;
+            var input = document.querySelector("[id$='account']");
+            console.log(input);
+            
+            if(input.textContent == '' ||  input.textContent == null ){
+                document.querySelector("[id$='output']").innerHTML = 'Enter atleast 3 characters';
+            }
+        }
+    */    
+        function showHiddenChar(hiddenChar){
+            document.getElementById('page:form:hidden').value = hiddenChar;
+        }
+    </script>
+</apex:page>

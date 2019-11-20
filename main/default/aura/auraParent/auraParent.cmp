@@ -1,0 +1,9 @@
+<aura:component controller = "getAccountList" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name = "accountList" type = "list"/>
+    <p>Welcome to Parent Component</p>
+    <aura:handler name = "init" value ="{!this}" action = "{!c.doInit}" />
+    <aura:if isTrue = "{!not(empty(v.accountList))}">
+    	<c:auraChild aura:id="childCmp"/>
+        <lightning:button  label="Get Accounts" onclick="{!c.callAuraMethod}" variant="brand" />
+    </aura:if>
+</aura:component>

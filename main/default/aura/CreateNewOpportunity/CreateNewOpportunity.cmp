@@ -1,0 +1,34 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name="accountId" type="String" access="global"/>
+    <aura:attribute name="newOpportunity" type="Object" access="global"/>
+    <aura:attribute name="simpleNewOpportunity" type="Object" access="global"/>
+    <aura:attribute name="newOpportunityError" type="String" access="global"/>
+    <aura:handler event="c:AccountRecordId" action="{!c.handleAccountId}" />
+    <lightning:overlayLibrary aura:id="popuplib"/>
+    <force:recordData aura:id="opportunityRecordCreator"
+        layoutType="FULL"
+        targetRecord="{!v.newOpportunity}"
+        targetFields="{!v.simpleNewOpportunity}"
+        targetError="{!v.newOpportunityError}"
+        />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Display the new Opportunity form -->
+    <lightning:input aura:id="opportunityField" type = "Text" name="Name" label="Name"
+                     value="{!v.simpleNewOpportunity.Name}" required="true"/>
+  
+    <lightning:input aura:id="opportunityField" type = "Picklist" name="StageName" label="Stage Name"
+                  value="{!v.simpleNewOpportunity.StageName}"/>
+            
+    <lightning:input aura:id="opportunityField" type = "Currency" name="Amount" label="Amount"
+                  value="{!v.simpleNewOpportunity.Amount}" />
+    
+    <lightning:input aura:id="opportunityField" type = "Date" name="CloseDate" label="CloseDate"
+                value="{!v.simpleNewOpportunity.CloseDate}" />
+        
+    <lightning:button label="Cancel" onclick="{!c.handleCancel}" class="slds-m-top_medium" />
+    <lightning:button label="Save" onclick="{!c.handleSave}"
+               variant="brand" class="slds-m-top_medium"/>    
+    	
+</aura:component>

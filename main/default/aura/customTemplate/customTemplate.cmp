@@ -1,0 +1,27 @@
+<aura:component implements = "lightning:homeTemplate" access="global" >
+	<aura:attribute name="firstElement" type="Aura.Component[]" />
+    <aura:attribute name="secondElement" type="Aura.Component[]" />
+    <aura:attribute name="thirdElement" type="Aura.Component[]" />
+	<aura:attribute name="fourthElement" type="Aura.Component[]" />
+	
+	    <div>
+        <lightning:layout horizontalAlign="spread" pullToBoundary="small">
+            <lightning:layoutItem size="6" flexibility="grow" 
+                                  padding="around-small"> 
+                {!v.firstElement}
+            </lightning:layoutItem>
+            <lightning:layoutItem size="6" flexibility="grow" 
+                                  padding="around-small">         
+                {!v.secondElement}
+            </lightning:layoutItem>
+            <lightning:layoutItem size="6" flexibility="grow" 
+                                  padding="around-small">
+                {!v.thirdElement}
+            </lightning:layoutItem>
+            <lightning:layoutItem size="6" flexibility="grow" 
+                                  padding="around-small">
+                {!v.fourthElement}
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div> 
+</aura:component>

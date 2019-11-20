@@ -1,0 +1,5 @@
+<aura:component >
+    <div>
+    	<lightning:input type="date" name="input1" label="Enter a date" />
+    </div>
+</aura:component>

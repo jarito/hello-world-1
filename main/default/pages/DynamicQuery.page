@@ -1,0 +1,82 @@
+<apex:page controller="DynamicQueryController" showHeader="true" sidebar="true" >
+	<apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:OutputLabel value="Select Object" />
+                <apex:SelectList size="1" value="{!selectedObject}">
+                <apex:actionSupport event="onchange" reRender="Multiselect">
+                </apex:actionSupport> 
+                <apex:SelectOptions value="{!objectList}" />
+                </apex:SelectList>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageBlock id="Pgblock">
+            <apex:outputLabel value="Select Fields" id="fieldSelector"/>
+            <apex:panelGrid columns="3" id="Multiselect">
+                <apex:selectList id="sel1" value="{!leftselected}" multiselect="true" style="width:100px" size="5">
+                    <apex:selectOptions value="{!unselectedvalues}" />
+                </apex:selectList>
+                    <apex:panelGroup >
+                        <br/>
+                        <apex:image value="{!$Resource.Select}">
+                            <apex:actionSupport event="onclick" action="{!selectclick}" reRender="Multiselect"/>
+                        </apex:image>
+                        <br/><br/>
+                        <apex:image value="{!$Resource.Unselect}">
+                            <apex:actionSupport event="onclick" action="{!unselectclick}" reRender="Multiselect"/>
+                        </apex:image>
+                    </apex:panelGroup>
+                <apex:selectList id="sel2" value="{!rightselected}" multiselect="true" style="width:100px" size="5">
+                    <apex:selectOptions value="{!SelectedValues}" />
+                </apex:selectList>
+            </apex:panelGrid>
+        </apex:pageBlock>
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:OutputLabel value="Maximum Record to Display" />
+                <apex:SelectList size="1" value="{!recordCount}">
+                    <apex:SelectOptions value="{!recordCountValues}" />
+                </apex:SelectList>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection >
+                 <apex:OutputLabel value="Sort By" />
+                <apex:SelectList size="1" value="{!selectedField}">
+                    <apex:SelectOptions value="{!unselectedvalues}" />
+                </apex:SelectList>               
+            </apex:pageBlockSection>
+            <apex:pageBlockSection >
+                 <apex:OutputLabel value="Sort As" />
+                <apex:selectRadio value="{!sortOption}">
+                    <apex:SelectOptions value="{!sortOptionList}" />
+                </apex:selectRadio>               
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" id="PBSection">
+                <apex:outputLabel value="Enter the text to be searched" for="text" id="opLabelText">
+                </apex:outputLabel>
+                <apex:pageMessages id="showmsg"></apex:pageMessages>
+                <apex:inputText value="{!inputValue}" id="text" />
+            </apex:pageBlockSection>              
+            <apex:pageBlockSection >
+                <apex:commandButton value="Execute Query"  action="{!getRecords}" reRender="" >
+                </apex:commandButton>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection > 
+                <apex:outputLabel value="SOQL Query" for="queryId" id="opLabel">
+                </apex:outputLabel>
+                <apex:outputText value="{!dynamicString}" id="queryId"/>                
+            </apex:pageBlockSection> 
+        </apex:pageBlock>
+        <apex:pageBlock >
+	        <apex:outputLabel value="Query Results" id="result"/>
+            <apex:pageBlockTable value="{!searchList}" var="searchListVar">
+                <apex:repeat value="{!joinList}" var="selectedField">
+                    <apex:column headerValue="{!searchListVar[selectedField]}">
+                        <apex:outputLink value="/{!searchListVar.id}">
+                        {!searchListVar[selectedField]}
+                        </apex:outputLink>                    
+                    </apex:column>
+                </apex:repeat>
+            </apex:pageBlockTable>            
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

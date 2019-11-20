@@ -1,0 +1,12 @@
+<aura:component  >
+    <aura:handler name="init" value="{!this}" action="{!c.onLoad}"/>
+    <aura:handler name="change" value="{!v.stageName}" action="{!c.onChange}"/>
+    <aura:attribute name="Color" type="String" access= "global"/>
+    <aura:attribute name="stageName" type="String" access= "global"/>
+    <aura:attribute name="closureStatus" type="String" access= "global"/>
+
+    <div class="slds-truncate"  title="{!v.stageName}">
+        &nbsp;&nbsp;&nbsp;<span class="slds-badge slds-badge_inverse" style="{! 'background-color: ' + v.Color}"> {!v.stageName}</span>
+    </div>
+
+</aura:component>

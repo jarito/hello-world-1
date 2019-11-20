@@ -1,0 +1,47 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:handler event="c:FoodItemEvent" action="{!c.handleApplicationEvent}"/>
+    <aura:registerEvent name="deleteItem" type="c:FoodItemEventForCart"/>
+    <aura:attribute name="foodItemsInCart" type="list"/>
+    <aura:attribute name="recordId" type="String[]"/>
+    <aura:attribute name="total" type="Integer"/>
+    <aura:attribute name="contactInfoCart" type="Contact"/>
+    <aura:attribute name="companyInfoCart" type="Organization"/>
+    <aura:handler event="c:EventForObject" action="{!c.getContactDetails}"/>
+    <aura:handler name="init" value ="{!this}" action="{!c.doInit}"/>
+    <aura:if isTrue="{!v.recordId != null}">
+        <c:MapComponent recordId = "{!v.recordId}" />
+    </aura:if>    
+    <table class = "slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table_fixed-layout" >
+        <thead >
+            <tr class = "slds-text-heading_label">
+                <th scope = "col"><div class = "slds-truncate" title = "ID">ID</div></th>
+                <th scope = "col"><div class = "slds-truncate" title = "Item Name">Item Name</div></th>
+                <th scope = "col"><div class = "slds-truncate" title = "Price">Price</div></th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items = "{!v.foodItemsInCart}" var="item" indexVar="recordIndex">
+                <tr>
+                    <td class="slds-truncate" title="{!item.Id}">{!item.Id}</td> 
+                    <td class="slds-truncate" title="{!item.Name}">{!item.Name}</td>
+                    <td class="slds-truncate" title="{!item.Price__c}">{!item.Price__c}</td>                    
+                    <td data-arrivalCart="{!recordIndex}">
+                        <lightning:button
+                             label="Remove"
+                             name = "{!item.Id}"             
+                             onclick = "{!c.removeItem}"
+                             /> 
+                    </td>
+                </tr>
+            </aura:iteration>
+            <tr>
+                <td align = "right">Total</td>
+                <td>{!v.total}</td>
+            </tr>
+        </tbody>
+    </table> 
+    <div class="slds-m-around_xx-large">
+    	<c:MapComponent aura:id="childCmp"/>
+        <lightning:button  label="Call Aura Method" onclick="{!c.callAuraMethod}" variant="brand" />
+    </div>
+</aura:component>

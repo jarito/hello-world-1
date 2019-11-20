@@ -1,0 +1,22 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name="recordId" type="String"/>	
+    <aura:attribute name="contactInfo" type="Contact"/>
+    <aura:attribute name="companyInfo" type="Organization"/>
+    <aura:attribute name="mapMarkers" type="Object"/>	
+    <aura:attribute name="markersTitle" type="String" />
+    
+   
+    <aura:handler name="init" value ="{!this}" action="{!c.doInit}"/>
+    <aura:method name="mapMethod" action="{!c.childMethod}" access="public">
+        <aura:attribute name="contactDetails" type="Contact" default="Hello"/>
+        <aura:attribute name="companyDetails" type="Organization" default="Hii"/>
+    </aura:method> 
+    
+    <aura:if isTrue="{!v.mapMarkers != null}" >
+        <!-- the map component -->
+        abxsdjh
+        <lightning:map mapMarkers="{!v.mapMarkers }"
+        			   markersTitle="{!v.markersTitle}" 
+                       />
+    </aura:if>
+</aura:component>

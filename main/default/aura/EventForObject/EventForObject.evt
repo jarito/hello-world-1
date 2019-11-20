@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="Event template" >
+	<aura:attribute name="contactObject" type="Contact"/>
+	<aura:attribute name="companyObject" type="Organization"/>
+</aura:event>

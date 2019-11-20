@@ -1,0 +1,113 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+
+    <aura:attribute name = "sObjectType" type = "String" />
+    <aura:attribute name = "recordId" type = "String" />
+    <aura:attribute name = "record" type = "Object" access= "global" />
+    <aura:attribute name = "simpleRecord" type = "Object" access= "global"/>
+    <aura:attribute name = "stageName" type = "String" access= "global"/>
+    <aura:attribute name="recordError" type="String"/>  
+
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
+    <aura:handler name="change" value="{!v.recordId}" action="{!c.handleChange}" />
+    <aura:registerEvent name = "sObjectEvent" type = "c:sObjectEvent"  />
+    <aura:registerEvent name="recordIdEvent" type="c:MyRecordDetailEvent" />
+    <lightning:overlayLibrary aura:id="overlayLib" />  
+    
+    <div class="slds-p-top_none">
+        <aura:if isTrue="{! !(empty(v.recordId))}">
+            <force:recordData   aura:id="recordHandler"
+                                recordId="{!v.recordId}"
+                                layoutType="FULL"
+                                targetRecord="{!v.record}"
+                                targetFields="{!v.simpleRecord}"
+                                targetError="{!v.recordError}"
+                                recordUpdated="{!c.handleRecordUpdated}"
+            />
+            <aura:if isTrue="{!v.sObjectType == 'Opportunities'}">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_3-of-7">
+                        <span ><a onclick="{!c.getRecordId}" style="width:100%;" id="{!v.recordId}">{!v.simpleRecord.Name}</a></span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-7">
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!v.simpleRecord.Amount}</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-7">
+                        <span>&nbsp;{!v.simpleRecord.CloseDate}</span>
+                    </div>
+                    <div class="slds-col slds-size_2-of-7">
+                        <span ><c:OpportunityStageNameColor stageName="{!v.simpleRecord.StageName}"/></span>
+                    </div>
+                </div>
+            </aura:if>
+
+            <aura:if isTrue="{!v.sObjectType == 'closedOpportunities'}">
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-size_3-of-7">
+                            <span ><a onclick="{!c.getRecordId}" style="width:100%;" id="{!v.recordId}">{!v.simpleRecord.Name}</a></span>
+                        </div>
+                        <div class="slds-col slds-size_1-of-7">
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!v.simpleRecord.Amount}</span>
+                        </div>
+                        <div class="slds-col slds-size_1-of-7">
+                            <span>&nbsp;{!v.simpleRecord.CloseDate}</span>
+                        </div>
+                        <div class="slds-col slds-size_2-of-7">
+                            <span ><c:OpportunityStageNameColor stageName="{!v.simpleRecord.StageName}"/></span>
+                        </div>
+                    </div>
+                </aura:if>
+
+            <aura:if isTrue="{!v.sObjectType == 'ExpandedOrders'}">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_1-of-6">
+                        <span><a onclick="{!c.getOrderRecordId}" style="width:100%;" id="{!v.recordId}">{!v.simpleRecord.OrderNumber}</a></span>
+                    </div>
+                    <div class="slds-col slds-size_3-of-6">
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!v.simpleRecord.Account.Name}</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-6">
+                        <span>&nbsp;{!v.simpleRecord.TotalAmount}</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-6">
+                        <span >{!v.simpleRecord.Status}</span>
+                    </div>
+                </div>
+            </aura:if> 
+
+            <aura:if isTrue="{!v.sObjectType == 'Orders'}">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_1-of-7">
+                        <span >{!v.simpleRecord.OrderNumber}</span>
+                    </div>
+                    <div class="slds-col slds-size_3-of-7">
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!v.simpleRecord.Account.Name}</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-7">
+                        <span>&nbsp;{!v.simpleRecord.TotalAmount}</span>
+                    </div>
+                    <div class="slds-col slds-size_2-of-7">
+                        <span >{!v.simpleRecord.Status}</span>
+                    </div>
+                </div>
+            </aura:if>
+
+            <aura:if isTrue="{!v.sObjectType == 'OrderItems'}">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_3-of-7">
+                        <span >{!v.simpleRecord.Product2.Name}</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-7">
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!v.simpleRecord.Product2.ProductCode}</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-7">
+                        <span>&nbsp;{!v.simpleRecord.Quantity}</span>
+                    </div>
+                    <div class="slds-col slds-size_2-of-7">
+                        <span >{!v.simpleRecord.UnitPrice}</span>
+                    </div>
+                </div>
+            </aura:if>
+        </aura:if>     
+    </div>     
+</aura:component>

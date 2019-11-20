@@ -1,0 +1,24 @@
+<template>
+    <div class="slds-p-top_none">
+        <lightning-card>
+            <div class="slds-m-bottom_none slds-p-left_medium slds-size_medium alignmentClass ">
+                <lightning-input type = "search"
+                                 label = "Search for Accounts" 
+                                 name = "Account Name" 
+                                 value = "{searchKey}"
+                                 onchange = "{handleChange}"></lightning-input>
+            </div>
+            <template if:true={accountList.data}>
+                <div class="slds-m-bottom_none slds-p-left_medium slds-size_medium ">
+                    <ul class="slds-listbox slds-listbox_vertical slds-dropdown  slds-dropdown_left  slds-dropdown_medium">
+                        <template iterator:it={accountList.data}>
+                            <li key = {it.value.Id} value = {it.value.Id} class="slds-listbox__item" onclick = {selectedRecord}>
+                                {it.value.Name}
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+        </lightning-card>
+    </div>
+</template>

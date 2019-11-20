@@ -1,0 +1,69 @@
+<aura:component controller = "getAccountList" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:handler action = "{!c.handleOpportunityId}" event = "c:OpportunityIdOrder" />
+    <aura:attribute name = "opportunityId" type = "String" access = "global" />
+    <aura:attribute name = "orderList" type = "Object[]"/>
+    <aura:attribute name = "Columns" type="List" />
+    <lightning:overlayLibrary aura:id="overlayLib" /> 
+	<div class="slds-m-top_small">
+        <aura:if isTrue="{!not(empty(v.orderList))}">    
+            <lightning:card iconName="standard:orders" title="Related Orders">
+                <table class="slds-table slds-table_bordered" >
+                    <thead>
+                           <tr>
+                               <td>Order Number  </td>
+                               <td></td>
+                               <td>Account Name  </td>
+                               <td></td>
+                               <td></td>
+                           </tr>
+                    </thead>
+                    <tbody>            
+                        <lightning:layout multipleRows="true">
+                            <aura:iteration items="{!v.orderList}" var="item" indexVar="itemIndex">
+                                <tr>
+                                    <lightning:layoutItem >
+                                        <td>
+                                                {!item.OrderNumber}
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                                {!item.Account.Name}
+                                        </td>
+                                        <td></td>                                
+                                        <td>
+                                            <lightning:buttonIcon value="{!itemIndex}" onclick="{!c.toggle}" iconName="{!item.expanded?'utility:chevrondown':'utility:chevronright'}" />
+                                        </td>
+                                        <aura:if isTrue="{!item.expanded}">
+                                            <div>
+                                                <lightning:layout>
+                                                    <lightning:layoutItem padding="around-small">
+                                                        <div class = "header-column">
+                                                            <p class = "field-title">Order Number</p>
+                                                            <p> {!item.OrderNumber} </p>
+                                                        </div>
+                                                    </lightning:layoutItem>
+                                                    <lightning:layoutItem padding="around-small">
+                                                        <div class = "header-column">
+                                                            <p class = "field-title">Account Name</p>
+                                                            <p> {!item.Account.Name} </p>
+                                                        </div>
+                                                    </lightning:layoutItem>
+                                                    <lightning:layoutItem padding="around-small">
+                                                        <div class = "header-column">
+                                                            <p class = "field-title">Total Amount</p>
+                                                            <p> {!item.TotalAmount} </p>
+                                                        </div>
+                                                    </lightning:layoutItem>
+                                                </lightning:layout>                                        
+                                            </div>
+                                        </aura:if>
+                                   </lightning:layoutItem> 
+                                </tr>    
+                            </aura:iteration>
+                        </lightning:layout>
+                    </tbody>
+                </table>
+            </lightning:card> 
+        </aura:if>
+    </div>
+</aura:component>

@@ -1,0 +1,329 @@
+<aura:component controller="GenericViewController"  implements="flexipage:availableForAllPageTypes" access="global" >
+    <!--Attributes-->
+    <aura:attribute name="objectName" type="String" />  
+    <aura:attribute name = "opportunityList" type = "List"/>
+    <aura:attribute name = "orderList" type = "List"/>
+    <aura:attribute name = "orderItemsList" type = "List"/>
+    <aura:attribute name = "closedOpportunityList" type = "List"/>
+    <aura:attribute name = "accountId" type = "String" access = "global"/>
+    <aura:attribute name="collpaseText" type="String" default="Show Closed Opportunities"/>
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    
+    <!--Handlers-->
+    <aura:handler event="c:AccountRecordId" action="{!c.handleAccountId}" />
+    <aura:handler event = "c:sObjectEvent" action = "{!c.handleActiveComponent}" />
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+
+    <lightning:overlayLibrary aura:id="overlayLib" />
+
+<!--    <aura:if isTrue="{!v.Spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner-brand  slds-spinner slds-spinner-large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>-->
+
+    <div class="slds-p-top_none slds-card__body ">
+        <div class = "expDiv">
+            <aura:if isTrue="{!and(not(empty(v.opportunityList)) ,(v.objectName == 'Opportunity')) }">
+                <lightning:card iconName="standard:opportunity" title="Related Opportunities">
+                    <div class = "tableStyle">
+                        <table class="slds-table slds-table--bordered  ">
+                            <thead>
+                                <tr>
+                                    <th> </th>
+                                    <th> </th>
+                                    <th>Name</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Amount</th>
+                                    <th>CloseDate</th>
+                                    <th>StageName</th>
+                                    <th>Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.opportunityList}" var="obj" indexVar="index">
+                                    <tr>
+                                        <td colspan ="2"> 
+                                            <lightning:buttonIcon variant="bare" 
+                                                                  value="{!index}" 
+                                                                  onclick="{!c.toggle}" 
+                                                                  iconName="{!obj.expanded?'utility:down':'utility:right'}" 
+                                                                  iconClass="dark"
+                                                                  alternativeText="Show Orders"/> 
+                                            <lightning:buttonIcon variant="bare" 
+                                                                  value="{!obj.Id}" 
+                                                                  onclick="{!c.opportunityDetailPage}" 
+                                                                  iconName="utility:preview" 
+                                                                  iconClass="dark"
+                                                                  alternativeText="View Record Details"/></td>
+                                        <td colspan ="7"><c:LDSRecordList recordId = "{!obj.Id}" sObjectType = "Opportunities"/></td>    
+                                        <td>
+                                            <lightning:buttonIcon iconName="utility:edit"  
+                                                                  size="medium" 
+                                                                  variant="bare" 
+                                                                  onclick="{! c.editOpportunity }" 
+                                                                  value="{!obj.Id}"
+                                                                  alternativeText="Edit Opportunity"
+                                                                  iconClass="dark"/> <br/>  </td>
+                                    </tr>
+                                    <tr>
+                                        <aura:if isTrue="{!obj.expanded}">
+                                            <td colspan="2"></td>
+                                            <td colspan="7">
+                                                <table id = "trial">
+                                                    <aura:iteration items="{!obj.Orders}" var="item" >
+                                                        <tr>
+                                                            <td>
+                                                                <lightning:buttonIcon   variant="bare" 
+                                                                                        value="{!item.Id}" 
+                                                                                        onclick="{!c.orderRecordDetailPage}" 
+                                                                                        iconName="utility:preview" 
+                                                                                        iconClass="darkExpanded"
+                                                                                        alternativeText="View Order Details"/></td>
+                                                            <td colspan="6"><c:LDSRecordList recordId = "{!item.Id}" sObjectType = "ExpandedOrders"/></td>
+                                                            <td>   
+                                                                <lightning:buttonIcon iconName="utility:edit" 
+                                                                                      size="medium" 
+                                                                                      variant="bare" 
+                                                                                      onclick="{! c.editOrder }" 
+                                                                                      value="{!item.Id}"
+                                                                                      alternativeText="Edit Order"
+                                                                                      iconClass="darkExpanded"/> <br/>
+                                                            </td>  
+                                                        </tr>
+                                                    </aura:iteration>
+                                                </table>
+                                            </td>
+                                            <td></td>
+                                        </aura:if>
+                                    </tr>
+                                </aura:iteration> 
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="expandCollapse" onclick="{!c.ToggleCollapse}"> 
+                        <p>{!v.collpaseText}</p>
+                    </div>
+                    <div class="container hide" aura:id="containerCollapsable">
+                        <table class="slds-table slds-table_bordered" >
+                        <!--<thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>StageName</th>
+                                    <th>Amount</th>
+                                    <th>CloseDate</th>
+                                    <th>Edit</th>
+                                </tr>
+                            </thead>-->
+                            <tbody>
+                                <aura:iteration items="{!v.closedOpportunityList}" var="obj"  indexVar="index">
+                                    <tr>
+                                        <td colspan ="2">  
+                                            <lightning:buttonIcon variant="bare" 
+                                                                    value="{!index}" 
+                                                                    onclick="{!c.toggleClosedOpportunities}" 
+                                                                    iconName="{!obj.expanded?'utility:down':'utility:right'}" 
+                                                                    iconClass="dark"
+                                                                    name = "{!obj.OpportunityId}"
+                                                                    alternativeText="Show Orders"/> 
+                                            <lightning:buttonIcon variant="bare" 
+                                                                    value="{!obj.Id}" 
+                                                                    onclick="{!c.opportunityDetailPage}" 
+                                                                    iconName="utility:preview" 
+                                                                    iconClass="dark"
+                                                                    alternativeText="View Record Details"/>
+                                        </td>
+                                        <td colspan ="7"><c:LDSRecordList recordId = "{!obj.Id}" sObjectType = "closedOpportunities"/></td>    
+                                        <td>
+                                            <lightning:buttonIcon iconName="utility:edit" 
+                                                                    size="medium" 
+                                                                    variant="bare" 
+                                                                    onclick="{! c.editOpportunity }" 
+                                                                    value="{!obj.Id}"
+                                                                    name = "{!index}"
+                                                                    class = "closedOpportunities"
+                                                                    alternativeText="Edit Opportunity"
+                                                                    iconClass="dark"/> <br/>  
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <aura:if isTrue="{!obj.expanded}">
+                                            <td colspan="2"></td>
+                                            <td colspan="4">
+                                                <table id = "trial">
+                                                    <aura:iteration items="{!obj.Orders}" var="item" >
+                                                        <tr>
+                                                            <td>
+                                                                <lightning:buttonIcon   variant="bare" 
+                                                                                        value="{!item.Id}" 
+                                                                                        onclick="{!c.orderRecordDetailPage}" 
+                                                                                        iconName="utility:preview" 
+                                                                                        iconClass="darkExpanded"
+                                                                                        alternativeText="View Order Details"/></td>
+                                                            <td colspan="6"><c:LDSRecordList recordId = "{!item.Id}" sObjectType = "ExpandedOrders"/></td>
+                                                            <td>   
+                                                                <lightning:buttonIcon iconName="utility:edit" 
+                                                                                        size="medium" 
+                                                                                        variant="bare" 
+                                                                                        onclick="{! c.editOrder }" 
+                                                                                        value="{!item.Id}"
+                                                                                        alternativeText="Edit Order"
+                                                                                        iconClass="darkExpanded"/> <br/>
+                                                            </td>  
+                                                        </tr>
+                                                    </aura:iteration>
+                                                </table>
+                                            </td>
+                                            <td></td>
+                                        </aura:if>
+                                        </tr>
+                                </aura:iteration>    
+                            </tbody>
+                        </table>
+                    </div>
+                </lightning:card>
+            </aura:if>
+        </div>
+    </div>
+
+    <div class="slds-p-top_none">
+        <aura:if isTrue="{!not(empty(v.orderList)) }">
+            <lightning:card iconName="standard:orders" title="Related Orders">               
+                <table class="slds-table slds-table_bordered" >
+                    <thead>
+                        <tr>
+                            <th> </th>
+                            <th> </th>
+                            <th>Order Number</th>
+                            <th>Account</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.orderList}" var="obj" indexVar="index">
+                            
+                            <tr>
+                                <td colspan = "2">
+                                    <lightning:buttonIcon variant="bare" 
+                                                          value="{!index}" 
+                                                          onclick="{!c.toggleOrders}" 
+                                                          iconName="{!obj.expanded?'utility:down':'utility:right'}" 
+                                                          iconClass="dark"
+                                                          name = "{!obj.OpportunityId}"
+                                                          alternativeText="Show Orders"/> 
+                                    <lightning:buttonIcon variant="bare" 
+                                                          value="{!obj.Id}" 
+                                                          onclick="{!c.orderRecordDetailPage}" 
+                                                          iconName="utility:preview" 
+                                                          iconClass="dark"
+                                                          alternativeText="View Order Details"/>    
+                                </td>
+                                <td colspan="7"><c:LDSRecordList recordId = "{!obj.Id}" sObjectType = "Orders"/></td>
+                                <td>
+                                    <lightning:buttonIcon iconName="utility:edit" 
+                                                          size="medium" 
+                                                          variant="bare" 
+                                                          onclick="{!c.editOrder}" 
+                                                          value="{!obj.Id}"
+                                                          name= "{!obj.OpportunityId}"
+                                                          alternativeText="Edit Order"
+                                                          iconClass="dark"/> <br/>  
+                                </td>
+                            </tr>
+                            <tr>
+                                <aura:if isTrue="{!obj.expanded}"> 
+                                    <td colspan="2"></td>
+                                    <td colspan="7">
+                                        <table id = "trial">
+                                            <aura:iteration items="{!obj.OrderItems}" var="item" >
+                                                <tr>
+                                                    <td>
+                                                        <lightning:buttonIcon   variant="bare" 
+                                                                                value="{!item.Id}" 
+                                                                                onclick="{!c.orderItemDetailPage}" 
+                                                                                iconName="utility:preview" 
+                                                                                iconClass="darkExpanded"
+                                                                                alternativeText="View Order Details"/></td>
+                                                    <td colspan="6"><c:LDSRecordList recordId = "{!item.Id}" sObjectType = "OrderItems"/></td>
+                                                    <td>   
+                                                        <lightning:buttonIcon iconName="utility:edit" 
+                                                                              size = "medium" 
+                                                                              variant = "bare" 
+                                                                              onclick = "{! c.editOrderItem }" 
+                                                                              value = "{!item.Id}"
+                                                                              name = "{!item.OrderId}"
+                                                                              class = "orderTable"
+                                                                              alternativeText="Edit OrderItem"
+                                                                              iconClass="darkExpanded"/> <br/>
+                                                    </td>  
+                                                </tr>
+                                            </aura:iteration>
+                                        </table>
+                                    </td>                                    
+                                </aura:if> 
+                            </tr>
+                        </aura:iteration>    
+                    </tbody>
+                </table> 
+            </lightning:card>    
+        </aura:if>
+    </div>
+    <div class="slds-p-top_none">
+        <aura:if isTrue="{!not(empty(v.orderItemsList)) }">   
+            <lightning:card iconName="standard:orders" title="Related Order Items">               
+                <table class="slds-table slds-table_bordered" >
+                    <thead>
+                            <tr>
+                                <th></th>
+                                <th>Product</th>
+                                <th>Product Code</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Edit</th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.orderItemsList}" var="obj" indexVar="index">
+                            <tr>
+                                <td> <lightning:buttonIcon  variant="bare" 
+                                                            value="{!obj.Id}" 
+                                                            onclick="{!c.orderItemDetailPage}" 
+                                                            iconName="utility:preview" 
+                                                            iconClass="dark"
+                                                            alternativeText="View Record Details"/></td>
+                                <td colspan="6"> <c:LDSRecordList recordId = "{!obj.Id}" sObjectType = "OrderItems"/> </td>
+                                <td>
+                                    <lightning:buttonIcon iconName="utility:edit" 
+                                                          size="medium" 
+                                                          variant="bare" 
+                                                          onclick="{!c.editOrderItem}"
+                                                          value="{!obj.Id}"
+                                                          name = "{!obj.OrderId}"
+                                                          class = "orderItemTable"
+                                                          alternativeText="Edit Opportunity"
+                                                          iconClass="dark"/>  
+                                </td>
+                            </tr>
+                        </aura:iteration>    
+                    </tbody>
+                </table> 
+            </lightning:card>    
+        </aura:if>
+    </div>
+
+</aura:component>

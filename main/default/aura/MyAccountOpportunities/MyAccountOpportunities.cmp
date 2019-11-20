@@ -1,0 +1,60 @@
+<aura:component controller = "getAccountList" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name = "opportunityList" type = "List"/>
+    <aura:attribute name = "opportunityRecord" type = "Object"/>
+    <aura:attribute name = "opportunityId" type = "String" access = "global" />
+    <aura:attribute name = "accountId" type = "String" access = "global"/>
+    <aura:handler event="c:AccountRecordId" action="{!c.handleAccountId}" />
+    <aura:registerEvent name="AccountIdEvent" type="c:AccountRecordId" />
+    <aura:registerEvent name = "opportunityEvent" type = "c:OpportunityRecordId"  />
+    <aura:registerEvent name = "opportunityOrderEvent" type = "c:OpportunityIdOrder"  />
+    <aura:handler event="c:SampleEvent" action="{!c.handleEvent}" />
+    <lightning:overlayLibrary aura:id="overlayLib" />
+    <div class="slds-m-top_small">
+        <aura:if isTrue="{!not(empty(v.opportunityList))}">
+            <lightning:card iconName="standard:opportunity" title="Related Opportunities"><lightning:helptext content="Add new Opportunity" iconName="utility:info" class="customIcon"/>
+                <aura:set attribute="actions">
+                    <!--<lightning:button variant="brand" label="Edit" onclick="{!c.editAccount}" value="{!v.recordId}"/>-->
+                	 <lightning:buttonIcon iconName="utility:add" 
+                                          size="medium" 
+                                          variant="bare" 
+                                          onclick="{!c.createNewRecord}" 
+                                          value="{!v.recordId}" 
+                                          alternativeText="New Opportunity" 
+                                          iconClass="dark"/>
+                </aura:set>                
+                <table class="slds-table slds-table_bordered" >
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>StageName</th>
+                            <th>Amount</th>
+                            <th>CloseDate</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.opportunityList}" var="obj" indexVar="index">
+                            
+                            <tr>
+                                <td> <a onclick="{!c.getRecordId}" style="width:100%;" data-index="{!index}">{!obj.Name}</a> </td>
+                                <td> {!obj.StageName} </td>
+                                <td> {!obj.Amount} </td>
+                                <td> {!obj.CloseDate} </td>
+                                <td>
+                            	<!-- <lightning:button variant="brand" label="Edit" onclick="{! c.handleClick }" value="{!obj.Id}" /> <br/> -->
+                                      <lightning:buttonIcon iconName="utility:edit" 
+                                          					size="medium" 
+                                          					variant="bare" 
+                                          					onclick="{! c.handleClick }" 
+                                          					value="{!obj.Id}"
+                                          					alternativeText="Edit Opportunity"
+                                                            iconClass="dark"/> <br/>  
+                                </td>
+                            </tr>
+                        </aura:iteration>    
+                    </tbody>
+                </table> 
+            </lightning:card>    
+        </aura:if>
+    </div>
+</aura:component>

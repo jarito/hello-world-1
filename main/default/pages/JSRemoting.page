@@ -1,0 +1,30 @@
+<apex:page standardController="Account" recordSetVar="accounts" extensions="RemotingController">
+<apex:includeScript value="{!URLFOR($Resource.JSRemoting, 'remoting.js')}"/>
+    <apex:form >
+        <apex:pageblock >
+            <apex:outputLabel id="output" />
+            <apex:pageBlockTable value="{!accounts}" var="account" columnsWidth="220px,220px">
+                      <apex:column headerValue="Action" >
+                         <apex:commandLink onclick="chooseAccount('{!account.id}')"  oncomplete="window.top.location.reload()" value="del">
+                         </apex:commandLink>
+                      </apex:column>
+                      <apex:column headerValue="Name">
+                            <apex:outputLink value="/{!account.id}">
+                            {!account.Name}
+                            </apex:outputLink>
+                       </apex:column>
+                       <apex:column value="{!account.Phone}"/>
+                       <apex:column headerValue="Website">
+                            <apex:outputLink value="{!account.Website}/"> {!account.Website}
+                            </apex:outputLink>
+                       </apex:column>
+            </apex:pageBlockTable>     
+        </apex:pageblock>
+    </apex:form>
+    <script>
+        var id = '{RemoteAction.RemotingController.chooseAccount}';
+        if(id != '' ||  id != null ){
+            document.querySelector("[id$='output']").innerHTML = 'Account hes been deleted Successfully';
+        }
+    </script>
+</apex:page>

@@ -1,0 +1,90 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller = "CustomRelatedListController"  >
+    <!-- attributes -->
+    <aura:attribute name = "objectName" type = "string" access = "global" />
+    <aura:attribute name = "objectIconName" type = "string" access = "global" />
+    <aura:attribute name = "cardTitle" type = "string" access = "global" />
+    <aura:attribute name = "iconUrl" type = "string" access = "global" />
+	<aura:attribute name = "lstContact" type = "List" />
+    <aura:attribute name = "recordId" type ="String" />
+    <aura:attribute name = "contactId" type = "String" default = '003P000001CDqawIAD'/>
+    <!-- <aura:attribute name = "fieldSetListDisplay" type = "List" default = "['Id', 'Name']" />
+    <aura:attribute name = "fieldSetListQuery" type = "List" default = "['Id']" />
+    <aura:attribute name = "lstNewRecordFieldAPIName" type = "List" />
+    <aura:attribute name = "lstNewRecordFieldLabel" type = "List" /> -->
+    <aura:attribute name = "recordList" type = "List" />
+    <aura:attribute name = "fieldsetName" type = "string"/>
+    <aura:attribute name = "columns" type = "List"/>
+	<aura:attribute name = "resultantMap" type = "Map" />
+    <aura:attribute name = "outerList" type = "List" />
+    <aura:attribute name = "relationshipName" type = "String" />
+    <aura:attribute name = "maxRecords" type="String" default="3"/>
+    <aura:attribute name = "displayLink" type="Boolean" default="false"/>
+    <aura:attribute name = "fieldNameForSort" type="String" default="Id"/>
+    <aura:attribute name = "order" type="String" default="ASC"/>
+    <aura:attribute name = "dataTableList" type="List" />
+    
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    
+    <!--Libraries Used-->
+    <lightning:overlayLibrary aura:id="overlayLib" />
+
+    <div class="container">
+       <!--  <lightning:card title = "{!v.cardTitle+' '+'Details'}" iconName = "{!'standard:'+v.objectIconName}"> -->
+       <lightning:card title = "{!v.cardTitle+' '+'Details'}" iconName = "{!v.iconUrl}">
+       
+          <!--<aura:set attribute="actions">
+              <lightning:button variant="brand" 
+								label="New" 
+								title="New" 
+								onclick="{! c.handleCreateNewCase }" />
+      		</aura:set>-->
+			<div class="slds-media__body">
+                <!-- Updates today start -->
+                <lightning:datatable
+                                keyField="id"
+                                data="{! v.dataTableList }"
+                                columns="{! v.columns }"
+                                hideCheckboxColumn="true"
+                                onsort="{! c.updateColumnSorting }"
+                                sortedBy="{! v.fieldNameForSort }"
+                                sortedDirection="{! v.order }"/>
+
+                <!-- <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <aura:iteration items = "{!v.fieldSetListDisplay}" var="item">
+                            	<th class="" scope="col">
+                                	<div class="slds-truncate" title="{!item}">{!item}</div>
+                            	</th>
+                            </aura:iteration>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items = "{!v.outerList}" var="item">
+                            <tr class="slds-hint-parent">
+                                <aura:iteration items="{!item}" var="cus" indexVar="key">
+                                    <td >
+                                        <aura:if isTrue="{!key == 0}">
+                                            <div style="font-family: 'Salesforce Sans',Arial,sans-serif;" class="slds-truncate" title="{!cus.value}"><a href="{!'/lightning/r/'+ v.objectName +'/'+ cus.recId + '/view'}" target="_blank">{!cus.value}</a></div>
+                                            <aura:set attribute="else">
+                                                <div style="font-family: 'Salesforce Sans',Arial,sans-serif;" class="slds-truncate" title="{!cus.value}">{!cus.value}</div>
+                                            </aura:set>
+                                        </aura:if>
+                                    </td>
+                                </aura:iteration>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table> -->
+                <!-- Updates today end -->
+            </div>
+            <div class="slds-card__footer">
+                <aura:if isTrue="{!v.displayLink}">
+                	<a class="slds-card__footer-action slds-text-align_center" onclick="{!c.handleViewall}" style="width:100%;">View All</a>
+                </aura:if>
+            </div> 
+        </lightning:card>  
+    </div>
+    
+</aura:component>

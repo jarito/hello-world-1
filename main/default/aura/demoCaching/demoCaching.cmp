@@ -1,0 +1,50 @@
+<aura:component controller = "contactList" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name = "allContacts" type = "List" />
+    <aura:attribute name = "record" type = "Object" access= "global" />
+    <aura:attribute name = "simpleRecord" type = "Object" access= "global"/>
+    <aura:attribute name="recordError" type="String"/>    
+    <aura:attribute name="Columns" type="List" />
+    <lightning:overlayLibrary aura:id="overlayLib" />   
+     
+    <lightning:card iconName="standard:contact" title="List of Contacts">
+        <!-- Contact list goes here -->
+       <lightning:datatable data="{!v.allContacts }" columns="{!v.Columns }" keyField="Id" hideCheckboxColumn="true"/>
+	</lightning:card>
+    <lightning:button
+         aura:id="buttonId"             
+         label="Get Contacts..."             
+         onclick = "{!c.getContacts}"  
+         disabled="false"
+         />
+ 
+    <lightning:card iconName="standard:contact" title="List of Contacts using LDS">
+        <!-- Contact list goes here -->
+
+            <div class="slds-p-top_medium">
+                <aura:if isTrue="{!not(empty(v.allContacts))}">
+                    <table CLASS="slds-table slds-table--bordered">
+                        <thead>
+                            <th> LastName </th>
+                            <th> Edit </th>
+                        </thead>
+                        <tbody>
+                            <aura:iteration  items="{!v.allContacts}" var="item">
+                                    <tr>
+                                        <td> <c:LDSRecordList recordId = "{!item.Id}"/> </td>
+                                        <td>
+                                            <lightning:buttonIcon iconName="utility:edit" 
+                                                                size="medium" 
+                                                                variant="bare" 
+                                                                onclick="{! c.handleClick }" 
+                                                                value="{!item.Id}"
+                                                                alternativeText="Edit Contact"
+                                                                iconClass="dark"/> <br/>
+                                        </td>
+                                    </tr>
+                            </aura:iteration> 
+                        </tbody>
+                    </table>            	
+                </aura:if>     
+            </div>
+    </lightning:card>     
+</aura:component>

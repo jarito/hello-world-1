@@ -1,0 +1,6 @@
+<apex:page title="ShowImage" >
+    <h4>
+    <apex:image alt="cat" title="kitten"
+                url="{!$Resource.vfimagetest}" height="50" width="1100"/>
+    </h4>
+</apex:page>

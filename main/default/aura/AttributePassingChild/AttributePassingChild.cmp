@@ -1,0 +1,10 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name = "childMsg" type = "String" default = "Hello Child"/>
+    <aura:registerEvent name="cmpEvent" type="c:ceEvent"/>
+    
+    <aura:handler name="cmpEvent" event="c:ceEvent" action="{!c.handleComponentEvent}"/>
+    
+    <p>Message from Child : {!v.childMsg}</p>
+    
+    <lightning:button variant="base" label="Child" title="Child" onclick="{! c.handleClick }"/>
+</aura:component>

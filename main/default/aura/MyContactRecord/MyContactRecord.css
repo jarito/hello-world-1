@@ -1,0 +1,21 @@
+.THIS .field-title{
+	color : green;
+    fill:green;
+    font-weight: bold;
+}
+
+.THIS .slds-button__icon{
+    fill:green;
+    margin-bottom:5px;
+}
+.THIS .slds-text-title_bold{
+    font-size : 20px;
+    color : rgb(48,48,48);
+}
+.THIS .slds-card{
+    background : rgb(243, 242, 242);
+}
+.THIS .slds-avatar_large{
+    width:10rem;
+    height:10rem;
+}

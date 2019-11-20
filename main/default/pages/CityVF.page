@@ -1,0 +1,28 @@
+<apex:page controller="CityVFController" lightningStylesheets="true">
+  <apex:form >
+    <apex:pageBlock >
+      <apex:pageBlockTable value="{!cityInfo}" var="cityVar">
+        <apex:column value="{!cityVar.Name}" />
+        <apex:column value="{!cityVar.Country__c}"/>      
+      </apex:pageBlockTable>
+    </apex:pageBlock>
+    <apex:pageBlock id="countryBlock" >
+      <apex:pageBlockSection >
+        <apex:OutputLabel value="Country" />
+        <apex:SelectList size="1" value="{!selectedCountry}">
+           <apex:actionSupport event="onchange" action="{!getCities}" reRender="cityBlock">
+           </apex:actionSupport>          
+           <apex:SelectOptions value="{!countryNames}" />
+        </apex:SelectList>
+      </apex:pageBlockSection>
+    </apex:pageBlock>
+    <apex:pageBlock id="cityBlock" >
+      <apex:pageBlockSection >
+        <apex:OutputLabel value="City" />
+        <apex:SelectList size="1">
+          <apex:SelectOptions value="{!cityNames}" />
+        </apex:SelectList>
+      </apex:pageBlockSection>
+    </apex:pageBlock>    
+  </apex:form>
+</apex:page>

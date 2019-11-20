@@ -1,0 +1,60 @@
+<aura:component controller = "createAccountController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="accounts" type="Account[]"/>
+    <aura:attribute name="newAccount" 
+                    type="Account"
+                    default="{ 'sobjectType': 'Account',
+                               'Name': '',
+                               'Phone': ''}"/>
+    
+
+    <!-- PAGE HEADER -->
+    <lightning:layout class="slds-page-header slds-page-header--object-home">
+        <lightning:layoutItem>
+            <lightning:icon iconName="standard:account" alternativeText="My Account"/>
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="horizontal-small">
+            <div class="page-section page-header">
+                <h1 class="slds-text-heading--label">Account</h1>
+                <h2 class="slds-text-heading--medium">My Accounts</h2>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout>
+    <!-- / PAGE HEADER -->
+    <!-- NEW EXPENSE FORM -->
+    <lightning:layout>
+        <lightning:layoutItem padding="around-small" size="6">
+            <!-- CREATE NEW EXPENSE -->
+    <div aria-labelledby="newaccountform">
+        <!-- BOXED AREA -->
+        <fieldset class="slds-box slds-theme--default slds-container--small">
+        <legend id="newexpenseform" class="slds-text-heading--small 
+          slds-p-vertical--medium">
+          Add Account
+        </legend>
+  
+        <!-- CREATE NEW EXPENSE FORM -->
+        <form class="slds-form--stacked">          
+            <lightning:input aura:id="expenseform" label="Account Name"
+                             name="accountname"
+                             value="{!v.newAccount.Name}"
+                             required="true"/> 
+
+            <lightning:input aura:id="expenseform" label="Phone"
+                             name="accountphone"
+                             value="{!v.newAccount.Phone}" />
+            
+            <lightning:button label="Create account" 
+                              class="slds-m-top--medium"
+                              variant="brand"
+                              onclick="{!c.clickCreate}"/>
+        </form>
+        <!-- / CREATE NEW EXPENSE FORM -->
+  
+      </fieldset>
+      <!-- / BOXED AREA -->
+    </div>
+    <!-- / CREATE NEW EXPENSE -->
+        </lightning:layoutItem>
+    </lightning:layout>
+    <!-- / NEW EXPENSE FORM -->
+</aura:component>

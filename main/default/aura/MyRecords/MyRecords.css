@@ -1,0 +1,53 @@
+.THIS {
+}
+.THIS .dark {
+    color: #696969;
+}
+.THIS .dark:hover {
+    color:#000;
+}
+.THIS .darkExpanded {
+    color: #84a3e1;
+}
+.THIS div.expandCollapse{
+    cursor : pointer;
+    width:30%; 
+    float:right ;
+    color: rgb(0, 92, 230);
+    font-size: 12.8px;
+    font-weight: 720;
+    vertical-align:top;
+}
+.THIS div.expandCollapse:hover {
+    text-decoration: underline;
+}
+.THIS div.expDiv{
+    padding : 0px;
+}
+
+.THIS div.hide{
+    display:none;
+}
+.THIS div.tableStyle{
+    padding-bottom: 5px;
+}
+.THIS .slds-accordion__summary{
+    font-size: 13px;
+    padding: 2px;
+}
+.THIS .slds-accordion__summary-heading{
+    font-size: 13px;
+}
+.THIS .slds-accordion__section{
+    font-size: 13px;
+    padding: 0.4px;
+}
+.THIS .slds-accordion__summary-action{
+    padding : 2px;
+}
+.THIS div.expandableText{
+    margin-left: 10px;
+}
+.THIS #trial tr{
+    border: 1 px solid red;
+}

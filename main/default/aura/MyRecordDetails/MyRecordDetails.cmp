@@ -1,0 +1,146 @@
+<aura:component controller="GenericViewController" implements="flexipage:availableForAllPageTypes" access="global" >
+	<aura:attribute name = "recordId" type = "String" access= "global"/>
+    <aura:attribute name = "record" type = "Object" access= "global" />
+    <aura:attribute name = "simpleRecord" type = "Object" access= "global"/>
+    <aura:attribute name = "recordError" type="String"/>
+    <aura:attribute name = "selectedAccountId" type = "String" />
+    <aura:attribute name = "objectName" type = "string" access = "global" />
+    <aura:attribute name = "currentObject" type = "string" access = "global" />
+    <aura:handler event="c:MyRecordDetailEvent" action="{!c.acceptId}" /> 
+    <aura:registerEvent name="sampleEvent" type="c:SampleEvent" />   
+    <lightning:overlayLibrary aura:id="overlayLib" />
+
+    <force:recordData aura:id="recordHandler"
+         recordId="{!v.recordId}"
+         layoutType="FULL"
+         targetRecord="{!v.record}"
+         targetFields="{!v.simpleRecord}"
+         targetError="{!v.recordError}"
+         recordUpdated="{!c.handleRecordUpdated}"
+    />
+	<div class="slds-p-top_none"> 
+        <aura:if isTrue="{! and( not(empty(v.recordId)) , (v.currentObject == 'Account') , (v.objectName == 'Account')  )}">
+            <lightning:card iconName="standard:account" title="Account Details">
+                <aura:set attribute="actions">
+                    <!--<lightning:button variant="brand" label="Edit" onclick="{!c.editAccount}" value="{!v.recordId}"/>-->
+                	<lightning:buttonIcon iconName="utility:edit" 
+                                          size="medium" 
+                                          variant="bare" 
+                                          onclick="{! c.editAccount }" 
+                                          value="{!v.recordId}" 
+                                          alternativeText="Edit Account" 
+                                          iconClass="dark"/>
+                </aura:set>
+                <lightning:layout>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">Account Name</p>
+                            <p> {!v.simpleRecord.Name} </p>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">Industry</p>
+                            <p> {!v.simpleRecord.Industry} </p>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">City</p>
+                            <p> {!v.simpleRecord.BillingCity} </p>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">Website</p>
+                            <p> {!v.simpleRecord.Website} </p>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>        	
+            </lightning:card>       
+        </aura:if>     
+    </div>  
+	<div class="slds-p-top_none">
+        <aura:if isTrue="{! and( not(empty(v.recordId)), (v.currentObject == 'Opportunity') )}">
+            <lightning:card iconName="standard:opportunity" title="Opportunity Details">
+                <aura:set attribute="actions">
+                <!--<lightning:button variant="brand" label="Edit" onclick="{!c.editOpportunity}" value="{!v.opportunityId}"/> -->
+                    <lightning:buttonIcon iconName="utility:edit" 
+                                          size="medium" 
+                                          variant="bare" 
+                                          onclick="{! c.editOpportunity }" 
+                                          value="{!v.recordId}"
+                                          alternativeText="Edit Opportunity"
+                                          iconClass="dark"/> <br/>                	
+                </aura:set>
+                <lightning:layout>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">Opportunity Name</p>
+                            <p> {!v.simpleRecord.Name} </p>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">StageName</p>
+                            <p> {!v.simpleRecord.StageName} </p>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">Amount</p>
+                            <p> {!v.simpleRecord.Amount} </p>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <div class = "header-column">
+                            <p class = "field-title">CloseDate</p>
+                            <p> {!v.simpleRecord.CloseDate} </p>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>        	
+            </lightning:card>           
+        </aura:if>     
+    </div> 
+	<div class="slds-p-top_none">
+            <aura:if isTrue="{! and( not(empty(v.recordId)), (v.currentObject == 'Order')   )}">
+                <lightning:card iconName="standard:orders" title="Order Details">
+                    <aura:set attribute="actions">
+                        <lightning:buttonIcon iconName="utility:edit" 
+                                              size="medium" 
+                                              variant="bare" 
+                                              onclick="{! c.editOrder }" 
+                                              value="{!v.recordId}"
+                                              alternativeText="Edit Order"
+                                              iconClass="dark"/> <br/>                	
+                    </aura:set>
+                    <lightning:layout>
+                        <lightning:layoutItem padding="around-small">
+                            <div class = "header-column">
+                                <p class = "field-title">Order Number</p>
+                                <p> {!v.simpleRecord.OrderNumber} </p>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem padding="around-small">
+                            <div class = "header-column">
+                                <p class = "field-title">Account Name</p>
+                                <p> {!v.simpleRecord.Account.Name} </p>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem padding="around-small">
+                            <div class = "header-column">
+                                <p class = "field-title">Amount</p>
+                                <p> {!v.simpleRecord.TotalAmount} </p>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem padding="around-small">
+                            <div class = "header-column">
+                                <p class = "field-title">Status</p>
+                                <p> {!v.simpleRecord.Status} </p>
+                            </div>
+                        </lightning:layoutItem>
+                    </lightning:layout>        	
+                </lightning:card>           
+            </aura:if>     
+        </div>       
+</aura:component>

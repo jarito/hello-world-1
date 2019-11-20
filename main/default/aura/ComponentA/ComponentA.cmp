@@ -1,0 +1,13 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name = "messageA" type = "string" default = "This is C"/>
+    <aura:attribute name = "message" type = "string" />
+	<aura:handler name = "testComponent" event="c:TestEventComponent" action="{!c.handleEvent}"/>
+    <h1>Hello A</h1>
+    <p> Message in A : {!v.messageA} </p>
+    <h4>Comp A</h4>
+    <aura:if isTrue="{!v.messageA != null}">
+        <c:ComponentB messageB = "{#v.messageA}"/>
+    </aura:if>
+    <lightning:button label = "Update A" onclick = "{!c.updateA}" />
+    <p>Message A: {!v.message}</p>
+</aura:component>

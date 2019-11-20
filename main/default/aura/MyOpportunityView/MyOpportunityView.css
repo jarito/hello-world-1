@@ -1,0 +1,19 @@
+.THIS {
+}
+
+.THIS.accountDetails{
+     border-color: 1px red;
+}
+.THIS .header-column {
+    padding: 0 1.5rem;
+}
+.THIS .field-title {
+    font-size: .73rem;
+    line-height: 1.25;
+    color: #54698d;
+    margin-bottom: .25rem;
+}
+
+.THIS .dark {
+    color: #000;
+}

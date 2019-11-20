@@ -1,0 +1,10 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:handler name= "testComponent" event="c:TestEventComponent" action="{!c.handleEventE}" />
+    <aura:handler event = "c:TestEvent" action = "{!c.handleEventAppE}"/>
+    <!--<aura:registerEvent name = "testApplication" type = "c:TestEvent"/>-->
+    <h1>Hello E2</h1>
+    <!--<lightning:button label = "FireApp" onclick = "{!c.fireEventApp}"/>-->
+	<aura:attribute name = "messageNew" type = "string"/>
+    <p>Message E : {!v.messageNew}</p> 
+    <c:ComponentF/>
+</aura:component>
